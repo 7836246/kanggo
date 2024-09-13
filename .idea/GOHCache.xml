@@ -6,6 +6,7 @@
         <entry key="Config">
           <value>
             <set>
+              <option value="file://$PROJECT_DIR$/config/config.go" />
               <option value="file://$PROJECT_DIR$/kanggo/config/config.go" />
             </set>
           </value>
@@ -13,6 +14,7 @@
         <entry key="Context">
           <value>
             <set>
+              <option value="file://$PROJECT_DIR$/context.go" />
               <option value="file://$PROJECT_DIR$/kanggo/context.go" />
             </set>
           </value>
@@ -20,6 +22,7 @@
         <entry key="KangGo">
           <value>
             <set>
+              <option value="file://$PROJECT_DIR$/kanggo.go" />
               <option value="file://$PROJECT_DIR$/kanggo/kanggo.go" />
               <option value="file://$PROJECT_DIR$/pkg/server.go" />
             </set>
@@ -29,6 +32,7 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/kanggo/router.go" />
+              <option value="file://$PROJECT_DIR$/router.go" />
             </set>
           </value>
         </entry>
@@ -37,6 +41,7 @@
             <set>
               <option value="file://$PROJECT_DIR$/internal/router.go" />
               <option value="file://$PROJECT_DIR$/kanggo/router.go" />
+              <option value="file://$PROJECT_DIR$/router.go" />
             </set>
           </value>
         </entry>
@@ -51,6 +56,30 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/config/config.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726251076742" />
+              <option name="schema">
+                <list>
+                  <option value="Config" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/context.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726251076767" />
+              <option name="schema">
+                <list>
+                  <option value="Context" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/internal/router.go">
           <value>
             <ScannedPath>
@@ -58,6 +87,18 @@
               <option name="schema">
                 <list>
                   <option value="Router" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/kanggo.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726251076754" />
+              <option name="schema">
+                <list>
+                  <option value="KangGo" />
                 </list>
               </option>
             </ScannedPath>
@@ -133,6 +174,19 @@
               <option name="schema">
                 <list>
                   <option value="KangGo" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/router.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726251076720" />
+              <option name="schema">
+                <list>
+                  <option value="RadixNode" />
+                  <option value="Router" />
                 </list>
               </option>
             </ScannedPath>

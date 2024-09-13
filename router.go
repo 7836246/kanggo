@@ -1,4 +1,4 @@
-package KangGo
+package kanggo
 
 import (
 	"github.com/7836246/kanggo/config"
