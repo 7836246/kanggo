@@ -36,7 +36,7 @@ func DefaultConfig() Config {
 		ReadTimeout:          0,               // 默认不设置读取超时
 		WriteTimeout:         0,               // 默认不设置写入超时
 		MaxRequestBodySize:   4 * 1024 * 1024, // 最大请求体大小为 4 MB
-		CaseSensitiveRouting: true,            // 路由区分大小写
+		CaseSensitiveRouting: false,           // 路由区分大小写
 		StrictRouting:        false,           // 不启用严格路由模式
 		UnescapePath:         false,           // 不对 URL 路径进行解码处理
 	}
