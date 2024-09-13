@@ -1,25 +1,24 @@
 package kanggo
 
 import (
-	"github.com/7836246/kanggo/config"
 	"net/http"
 )
 
 // KangGo 核心结构
 type KangGo struct {
 	router *Router
-	config config.Config
+	config Config
 }
 
 // Default 创建一个带有默认设置的 KangGo 实例
 func Default() *KangGo {
-	cfg := config.DefaultConfig() // 使用默认配置
+	cfg := DefaultConfig() // 使用默认配置
 	k := New(cfg)
 	return k
 }
 
 // New 创建一个新的 KangGo 实例
-func New(cfg config.Config) *KangGo {
+func New(cfg Config) *KangGo {
 	// 创建 KangGo 实例
 	k := &KangGo{
 		router: NewRouter(cfg), // 将配置传递给 NewRouter
@@ -28,7 +27,7 @@ func New(cfg config.Config) *KangGo {
 
 	// 根据配置决定是否打印横幅
 	if cfg.ShowBanner {
-		config.PrintWelcomeBanner()
+		PrintWelcomeBanner()
 	}
 
 	return k

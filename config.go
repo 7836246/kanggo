@@ -1,4 +1,4 @@
-package config
+package kanggo
 
 import (
 	"encoding/json"
@@ -30,6 +30,6 @@ func PrintWelcomeBanner() {
 |     < |  _  ||     ||  _  ||    |  ||  _  |
 |__|\__||___._||__|__||___  ||_______||_____|
                       |_____|
-简洁高效的 Go Web 框架，专为快速开发与高性能设计。当前版本：%s
+欢迎使用 KangGo - 一个简洁高效的 Go Web 框架，专为快速开发与高性能设计。当前版本：%s
 `, version.Version)
 }

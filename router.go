@@ -1,7 +1,6 @@
 package kanggo
 
 import (
-	"github.com/7836246/kanggo/config"
 	"net/http"
 	"strings"
 )
@@ -23,11 +22,11 @@ type RadixNode struct {
 type Router struct {
 	staticRoutes map[string]HandlerFunc // 静态路由哈希表
 	dynamicRoot  *RadixNode             // 动态路由的 Radix Tree 根节点
-	config       config.Config          // 添加配置到 Router 中
+	config       Config                 // 添加配置到 Router 中
 }
 
 // NewRouter 创建一个新的路由器
-func NewRouter(cfg config.Config) *Router {
+func NewRouter(cfg Config) *Router {
 	return &Router{
 		staticRoutes: make(map[string]HandlerFunc),
 		dynamicRoot:  &RadixNode{children: make(map[string]*RadixNode)},

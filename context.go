@@ -1,7 +1,6 @@
 package kanggo
 
 import (
-	"github.com/7836246/kanggo/config"
 	"net/http"
 )
 
@@ -15,7 +14,7 @@ type Context struct {
 }
 
 // NewContext 创建一个新的 Context 实例
-func NewContext(w http.ResponseWriter, req *http.Request, cfg config.Config) Context {
+func NewContext(w http.ResponseWriter, req *http.Request, cfg Config) Context {
 	return Context{
 		Writer:      w,
 		Request:     req,
