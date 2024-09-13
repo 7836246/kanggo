@@ -3,6 +3,7 @@ package kanggo
 import (
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -45,6 +46,24 @@ func NewRouter(cfg Config) *Router {
 
 // Handle 注册路由，判断是静态还是动态路由
 func (r *Router) Handle(method, pattern string, handler HandlerFunc) {
+	// 根据配置决定是否对路由进行大小写转换
+	if !r.config.CaseSensitiveRouting {
+		pattern = strings.ToLower(pattern)
+	}
+
+	// 根据配置决定是否启用严格路由模式
+	if !r.config.StrictRouting {
+		pattern = strings.TrimSuffix(pattern, "/")
+	}
+
+	// 根据配置决定是否对路径进行解码
+	if r.config.UnescapePath {
+		unescapedPattern, err := url.PathUnescape(pattern)
+		if err == nil {
+			pattern = unescapedPattern
+		}
+	}
+
 	routeKey := method + "-" + pattern
 	if isStaticRoute(pattern) {
 		// 静态路由，存入哈希表
@@ -107,9 +126,31 @@ func (r *Router) insertDynamicRoute(method, pattern string, handler HandlerFunc)
 
 // ServeHTTP 实现 http.Handler 接口
 func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	// 设置响应头中的 Server 字段
+	if r.config.ServerHeader != "" {
+		w.Header().Set("Server", r.config.ServerHeader)
+	}
+
+	// 检查请求体大小是否超过配置的最大限制
+	if req.ContentLength > int64(r.config.MaxRequestBodySize) {
+		http.Error(w, "请求体过大", http.StatusRequestEntityTooLarge)
+		return
+	}
+
+	// 根据配置决定是否对路径进行解码
+	path := req.URL.Path
+	if r.config.UnescapePath {
+		unescapedPath, err := url.PathUnescape(path)
+		if err != nil {
+			http.Error(w, "路径解码错误", http.StatusBadRequest)
+			return
+		}
+		path = unescapedPath
+	}
+
 	// 创建 Context 时传递配置参数
 	ctx := NewContext(w, req, r.config)
-	routeKey := req.Method + "-" + req.URL.Path
+	routeKey := req.Method + "-" + path
 
 	// 优先查找静态路由
 	if handler, ok := r.staticRoutes[routeKey]; ok {
@@ -120,7 +161,7 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 
 	// 查找动态路由
-	if handler, found := r.searchDynamicRoute(req.Method, req.URL.Path, &ctx); found {
+	if handler, found := r.searchDynamicRoute(req.Method, path, &ctx); found {
 		if err := handler(ctx); err != nil {
 			r.handleError(w, err) // 处理错误
 		}

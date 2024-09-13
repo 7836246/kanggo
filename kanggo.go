@@ -60,6 +60,15 @@ func (k *KangGo) Run(addr string) error {
 	if k.config.PrintRoutes {
 		k.router.PrintRoutes() // 打印所有注册的路由信息
 	}
+	// 创建一个自定义的 HTTP 服务器配置
+	server := &http.Server{
+		Addr:         addr,
+		Handler:      k.router,              // 使用 KangGo 的路由器作为请求处理器
+		IdleTimeout:  k.config.IdleTimeout,  // 设置空闲连接超时时间
+		ReadTimeout:  k.config.ReadTimeout,  // 设置读取请求超时时间
+		WriteTimeout: k.config.WriteTimeout, // 设置写入响应超时时间
+	}
+
 	fmt.Printf("KangGo 服务器正在运行，地址: %s\n", addr)
-	return http.ListenAndServe(addr, k.router)
+	return server.ListenAndServe()
 }
