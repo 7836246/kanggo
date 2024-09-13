@@ -14,8 +14,8 @@ type Context struct {
 }
 
 // NewContext 创建一个新的 Context 实例
-func NewContext(w http.ResponseWriter, req *http.Request, cfg Config) Context {
-	return Context{
+func NewContext(w http.ResponseWriter, req *http.Request, cfg Config) *Context {
+	return &Context{
 		Writer:      w,
 		Request:     req,
 		Params:      make(map[string]string),

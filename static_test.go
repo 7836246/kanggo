@@ -49,7 +49,7 @@ func TestStatic(t *testing.T) {
 	resp := httptest.NewRecorder()
 
 	// 处理请求
-	app.router.ServeHTTP(resp, req)
+	app.Router.ServeHTTP(resp, req)
 
 	// 打印调试信息
 	t.Logf("请求路径: %s\n", req.URL.Path)

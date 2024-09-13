@@ -8,7 +8,7 @@ import (
 )
 
 // HandlerFunc 定义处理函数签名
-type HandlerFunc func(Context) error
+type HandlerFunc func(ctx *Context) error
 
 // RadixNode 是 Radix Tree 的节点
 type RadixNode struct {
@@ -20,37 +20,46 @@ type RadixNode struct {
 	paramKey string // 路径参数的键（如 :id）
 }
 
-// RouteInfo 存储路由的信息
+// RouteInfo 存储动态路由的信息
 type RouteInfo struct {
 	Method  string
 	Pattern string
 }
 
-// StaticRouteInfo 存储静态路由的信息
+// StaticRouteInfo 存储普通静态路由的信息
 type StaticRouteInfo struct {
 	Prefix  string
 	Handler HandlerFunc
 }
 
+// FileRouteInfo 存储文件路由的信息
+type FileRouteInfo struct {
+	Prefix  string
+	Root    string
+	Handler HandlerFunc
+}
+
 // Router 路由结构
 type Router struct {
-	staticRoutes []StaticRouteInfo // 静态路由列表
+	staticRoutes []StaticRouteInfo // 普通静态路由列表
+	fileRoutes   []FileRouteInfo   // 文件路由列表
 	dynamicRoot  *RadixNode        // 动态路由的 Radix Tree 根节点
-	routes       []RouteInfo       // 存储所有注册的路由信息
+	routes       []RouteInfo       // 存储所有注册的动态路由信息
 	config       Config            // 添加配置到 Router 中
 }
 
 // NewRouter 创建一个新的路由器
 func NewRouter(cfg Config) *Router {
 	return &Router{
-		staticRoutes: []StaticRouteInfo{}, // 初始化静态路由列表
+		staticRoutes: []StaticRouteInfo{}, // 初始化普通静态路由列表
+		fileRoutes:   []FileRouteInfo{},   // 初始化文件路由列表
 		dynamicRoot:  &RadixNode{children: make(map[string]*RadixNode)},
 		config:       cfg,
 		routes:       []RouteInfo{}, // 初始化路由信息列表
 	}
 }
 
-// RegisterStaticRoute 注册静态文件服务的路由信息
+// RegisterStaticRoute 注册普通静态路由信息
 func (r *Router) RegisterStaticRoute(pattern string, handler HandlerFunc) {
 	r.staticRoutes = append(r.staticRoutes, StaticRouteInfo{
 		Prefix:  pattern,
@@ -58,12 +67,26 @@ func (r *Router) RegisterStaticRoute(pattern string, handler HandlerFunc) {
 	})
 }
 
-// PrintRoutes 打印所有注册的路由信息，区分静态文件路由和普通路由
+// RegisterFileRoute 注册文件路由信息
+func (r *Router) RegisterFileRoute(pattern, root string, handler HandlerFunc) {
+	r.fileRoutes = append(r.fileRoutes, FileRouteInfo{
+		Prefix:  pattern,
+		Root:    root,
+		Handler: handler,
+	})
+}
+
+// PrintRoutes 打印所有注册的路由信息，区分静态文件路由、普通静态路由和动态路由
 func (r *Router) PrintRoutes() {
 	fmt.Println("\n📋 已注册的路由信息:")
 	fmt.Println(strings.Repeat("=", 40))
 
 	fmt.Println("▶️  静态文件路由:")
+	for _, fileRoute := range r.fileRoutes {
+		fmt.Printf("    GET  %s\n", fileRoute.Prefix)
+	}
+
+	fmt.Println("▶️  普通静态路由:")
 	for _, staticRoute := range r.staticRoutes {
 		fmt.Printf("    GET  %s\n", staticRoute.Prefix)
 	}
@@ -76,7 +99,7 @@ func (r *Router) PrintRoutes() {
 	fmt.Println(strings.Repeat("=", 40))
 }
 
-// Handle 注册路由，判断是静态还是动态路由
+// Handle 注册路由，判断是静态、文件还是动态路由
 func (r *Router) Handle(method, pattern string, handler HandlerFunc) {
 	// 根据配置决定是否对路由进行大小写转换
 	if !r.config.CaseSensitiveRouting {
@@ -96,8 +119,10 @@ func (r *Router) Handle(method, pattern string, handler HandlerFunc) {
 		}
 	}
 
-	// 判断是否为静态路由
-	if isStaticRoute(pattern) {
+	// 判断是否为静态文件路由
+	if isFileRoute(pattern) {
+		r.RegisterFileRoute(pattern, "", handler)
+	} else if isStaticRoute(pattern) { // 判断是否为普通静态路由
 		// 注册静态路由
 		r.RegisterStaticRoute(pattern, handler)
 	} else {
@@ -109,9 +134,14 @@ func (r *Router) Handle(method, pattern string, handler HandlerFunc) {
 	}
 }
 
-// isStaticRoute 判断是否为静态路由（不包含 ":" 或 "*"）
+// isStaticRoute 判断是否为普通静态路由（不包含 ":" 或 "*"）
 func isStaticRoute(pattern string) bool {
 	return !strings.Contains(pattern, ":") && !strings.Contains(pattern, "*")
+}
+
+// isFileRoute 判断是否为文件路由（包含 "*" 的模式）
+func isFileRoute(pattern string) bool {
+	return strings.Contains(pattern, "*")
 }
 
 // insertDynamicRoute 向 Radix Tree 中插入动态路由
@@ -173,11 +203,21 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	// 创建 Context 时传递配置参数
 	ctx := NewContext(w, req, r.config)
 
+	// 查找文件路由
+	for _, fileRoute := range r.fileRoutes {
+		if strings.HasPrefix(path, fileRoute.Prefix) {
+			// 去除前缀后，将路径传给文件服务器处理
+			req.URL.Path = strings.TrimPrefix(path, fileRoute.Prefix)
+			if err := fileRoute.Handler(ctx); err != nil {
+				r.handleError(w, err)
+			}
+			return
+		}
+	}
+
 	// 查找静态路由
 	for _, staticRoute := range r.staticRoutes {
 		if strings.HasPrefix(path, staticRoute.Prefix) {
-			// 去除前缀后，将路径传给文件服务器处理
-			req.URL.Path = strings.TrimPrefix(path, staticRoute.Prefix)
 			if err := staticRoute.Handler(ctx); err != nil {
 				r.handleError(w, err)
 			}
@@ -186,7 +226,7 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 
 	// 查找动态路由
-	if handler, found := r.searchDynamicRoute(req.Method, path, &ctx); found {
+	if handler, found := r.searchDynamicRoute(req.Method, path, ctx); found {
 		if err := handler(ctx); err != nil {
 			r.handleError(w, err) // 处理错误
 		}
