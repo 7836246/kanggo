@@ -1,7 +1,7 @@
 package KangGo
 
 import (
-	"kanggo/kanggo/config"
+	"github.com/7836246/kanggo/config"
 	"net/http"
 	"strings"
 )

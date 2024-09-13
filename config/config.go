@@ -3,7 +3,7 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"kanggo/kanggo/version"
+	"github.com/7836246/kanggo/version"
 )
 
 // Config 配置结构体，允许用户自定义 JSON 编解码器等
