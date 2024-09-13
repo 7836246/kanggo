@@ -1,6 +1,7 @@
 package kanggo
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 )
@@ -18,10 +19,17 @@ type RadixNode struct {
 	paramKey string // 路径参数的键（如 :id）
 }
 
+// RouteInfo 存储路由的信息
+type RouteInfo struct {
+	Method  string
+	Pattern string
+}
+
 // Router 路由结构
 type Router struct {
 	staticRoutes map[string]HandlerFunc // 静态路由哈希表
 	dynamicRoot  *RadixNode             // 动态路由的 Radix Tree 根节点
+	routes       []RouteInfo            // 存储所有注册的路由信息
 	config       Config                 // 添加配置到 Router 中
 }
 
@@ -31,6 +39,7 @@ func NewRouter(cfg Config) *Router {
 		staticRoutes: make(map[string]HandlerFunc),
 		dynamicRoot:  &RadixNode{children: make(map[string]*RadixNode)},
 		config:       cfg,
+		routes:       []RouteInfo{}, // 初始化路由信息列表
 	}
 }
 
@@ -44,6 +53,19 @@ func (r *Router) Handle(method, pattern string, handler HandlerFunc) {
 		// 动态路由，存入 Radix Tree
 		r.insertDynamicRoute(method, pattern, handler)
 	}
+
+	// 记录路由信息
+	r.routes = append(r.routes, RouteInfo{Method: method, Pattern: pattern})
+}
+
+// PrintRoutes 打印所有注册的路由信息
+func (r *Router) PrintRoutes() {
+	fmt.Println("\n📋 已注册的路由信息:")
+	fmt.Println(strings.Repeat("=", 40))
+	for _, route := range r.routes {
+		fmt.Printf("▶️  %s  %s\n", route.Method, route.Pattern)
+	}
+	fmt.Println(strings.Repeat("=", 40))
 }
 
 // isStaticRoute 判断是否为静态路由（不包含 ":" 或 "*"）

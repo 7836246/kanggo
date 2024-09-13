@@ -1,6 +1,7 @@
 package kanggo
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -55,5 +56,10 @@ func (k *KangGo) DELETE(pattern string, handler HandlerFunc) {
 
 // Run 启动 HTTP 服务器
 func (k *KangGo) Run(addr string) error {
+	// 根据配置决定是否打印路由信息
+	if k.config.PrintRoutes {
+		k.router.PrintRoutes() // 打印所有注册的路由信息
+	}
+	fmt.Printf("KangGo 服务器正在运行，地址: %s\n", addr)
 	return http.ListenAndServe(addr, k.router)
 }

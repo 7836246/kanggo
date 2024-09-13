@@ -77,5 +77,4 @@ func main() {
 
 ## 贡献
 
-欢迎参与 KangGo 的开发！请提交 Pull Request 或 Issue 来帮助我们改善这个框架。  
-你的 GitHub 地址: [7836246](https://github.com/7836246)
+欢迎参与 KangGo 的开发！请提交 Pull Request 或 Issue 来帮助我们改善这个框架。
