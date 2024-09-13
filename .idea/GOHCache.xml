@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GoORMHelperCache">
+    <option name="schemaMapping">
+      <map>
+        <entry key="Config">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/kanggo/config/config.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="Context">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/kanggo/context.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="KangGo">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/kanggo/kanggo.go" />
+              <option value="file://$PROJECT_DIR$/pkg/server.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="RadixNode">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/kanggo/router.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="Router">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/internal/router.go" />
+              <option value="file://$PROJECT_DIR$/kanggo/router.go" />
+            </set>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="scannedPathMapping">
+      <map>
+        <entry key="file://$PROJECT_DIR$/cmd/main.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726245349737" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/internal/router.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726245349770" />
+              <option name="schema">
+                <list>
+                  <option value="Router" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/kanggo/config/config.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726250198648" />
+              <option name="schema">
+                <list>
+                  <option value="Config" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/kanggo/context.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726249684017" />
+              <option name="schema">
+                <list>
+                  <option value="Context" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/kanggo/kanggo.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726250334368" />
+              <option name="schema">
+                <list>
+                  <option value="KangGo" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/kanggo/router.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726250521457" />
+              <option name="schema">
+                <list>
+                  <option value="RadixNode" />
+                  <option value="Router" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/kanggo/version/version.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726246948948" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/main.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726250363874" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/pkg/server.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726245349798" />
+              <option name="schema">
+                <list>
+                  <option value="KangGo" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/../kanggo_test/main.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726250773683" />
+            </ScannedPath>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="tableStructMapping">
+      <map>
+        <entry key="config" value="Config" />
+        <entry key="context" value="Context" />
+        <entry key="kang_go" value="KangGo" />
+        <entry key="radix_node" value="RadixNode" />
+        <entry key="router" value="Router" />
+      </map>
+    </option>
+    <option name="lastTimeChecked" value="1726244931218" />
+  </component>
+</project>
