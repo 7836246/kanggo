@@ -6,6 +6,7 @@
         <entry key="Config">
           <value>
             <set>
+              <option value="file://$PROJECT_DIR$/config.go" />
               <option value="file://$PROJECT_DIR$/config/config.go" />
               <option value="file://$PROJECT_DIR$/kanggo/config/config.go" />
             </set>
@@ -16,6 +17,20 @@
             <set>
               <option value="file://$PROJECT_DIR$/context.go" />
               <option value="file://$PROJECT_DIR$/kanggo/context.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="FileRouteInfo">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/router.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="Group">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/group.go" />
             </set>
           </value>
         </entry>
@@ -36,11 +51,39 @@
             </set>
           </value>
         </entry>
+        <entry key="RouteInfo">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/router.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="Router">
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/internal/router.go" />
               <option value="file://$PROJECT_DIR$/kanggo/router.go" />
+              <option value="file://$PROJECT_DIR$/router.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="Static">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/static.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="StaticConfig">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/static.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="StaticRouteInfo">
+          <value>
+            <set>
               <option value="file://$PROJECT_DIR$/router.go" />
             </set>
           </value>
@@ -53,6 +96,18 @@
           <value>
             <ScannedPath>
               <option name="lastModified" value="1726245349737" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/config.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726256994212" />
+              <option name="schema">
+                <list>
+                  <option value="Config" />
+                </list>
+              </option>
             </ScannedPath>
           </value>
         </entry>
@@ -71,12 +126,31 @@
         <entry key="file://$PROJECT_DIR$/context.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726251076767" />
+              <option name="lastModified" value="1726258333630" />
               <option name="schema">
                 <list>
                   <option value="Context" />
                 </list>
               </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/group.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726257566661" />
+              <option name="schema">
+                <list>
+                  <option value="Group" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/group_test.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726257945429" />
             </ScannedPath>
           </value>
         </entry>
@@ -95,7 +169,7 @@
         <entry key="file://$PROJECT_DIR$/kanggo.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726251076754" />
+              <option name="lastModified" value="1726257810274" />
               <option name="schema">
                 <list>
                   <option value="KangGo" />
@@ -182,20 +256,42 @@
         <entry key="file://$PROJECT_DIR$/router.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726251076720" />
+              <option name="lastModified" value="1726260222500" />
               <option name="schema">
                 <list>
                   <option value="RadixNode" />
+                  <option value="RouteInfo" />
+                  <option value="StaticRouteInfo" />
+                  <option value="FileRouteInfo" />
                   <option value="Router" />
                 </list>
               </option>
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/static.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726259343814" />
+              <option name="schema">
+                <list>
+                  <option value="StaticConfig" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/static_test.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726258333614" />
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/../kanggo_test/main.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726250773683" />
+              <option name="lastModified" value="1726260089770" />
             </ScannedPath>
           </value>
         </entry>
@@ -205,9 +301,15 @@
       <map>
         <entry key="config" value="Config" />
         <entry key="context" value="Context" />
+        <entry key="file_route_info" value="FileRouteInfo" />
+        <entry key="group" value="Group" />
         <entry key="kang_go" value="KangGo" />
         <entry key="radix_node" value="RadixNode" />
+        <entry key="route_info" value="RouteInfo" />
         <entry key="router" value="Router" />
+        <entry key="static" value="Static" />
+        <entry key="static_config" value="StaticConfig" />
+        <entry key="static_route_info" value="StaticRouteInfo" />
       </map>
     </option>
     <option name="lastTimeChecked" value="1726244931218" />

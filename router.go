@@ -81,9 +81,9 @@ func (r *Router) RegisterFileRoute(pattern, root string, handler HandlerFunc) {
 func (r *Router) PrintRoutes() {
 	// 打印表头
 	fmt.Println("\n📋 已注册的路由信息:")
-	fmt.Println(strings.Repeat("=", 60))
-	fmt.Printf("| %-10s | %-20s | %-20s |\n", "类型", "路由前缀", "映射路径")
-	fmt.Println(strings.Repeat("=", 60))
+	fmt.Println(strings.Repeat("=", 66))
+	fmt.Printf("| %-10s | %-10s | %-20s | %-20s |\n", "类型", "请求方式", "路由前缀", "映射路径")
+	fmt.Println(strings.Repeat("=", 66))
 
 	// 打印文件路由和目录路由
 	for _, fileRoute := range r.fileRoutes {
@@ -92,21 +92,21 @@ func (r *Router) PrintRoutes() {
 		if isFile(fileRoute.Root) {
 			routeType = "文件"
 		}
-		fmt.Printf("| %-10s | %-20s | %-20s |\n", routeType, fileRoute.Prefix, fileRoute.Root)
+		fmt.Printf("| %-10s | %-10s | %-20s | %-20s |\n", routeType, "GET", fileRoute.Prefix, fileRoute.Root)
 	}
 
 	// 打印普通静态路由
 	for _, staticRoute := range r.staticRoutes {
-		fmt.Printf("| %-10s | %-20s | %-20s |\n", "静态", staticRoute.Prefix, "-")
+		fmt.Printf("| %-10s | %-10s | %-20s | %-20s |\n", "静态", "GET", staticRoute.Prefix, "-")
 	}
 
 	// 打印动态路由
 	for _, route := range r.routes {
-		fmt.Printf("| %-10s | %-20s | %-20s |\n", "动态", route.Method, route.Pattern)
+		fmt.Printf("| %-10s | %-10s | %-20s | %-20s |\n", "动态", route.Method, route.Pattern, "-")
 	}
 
 	// 打印表格结束线
-	fmt.Println(strings.Repeat("=", 60))
+	fmt.Println(strings.Repeat("=", 66))
 }
 
 // isFile 检查给定的路径是否是文件
