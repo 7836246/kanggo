@@ -23,7 +23,43 @@ go get -u github.com/7836246/kanggo
 ### 使用示例
 
 ```go
+package main
 
+import (
+    "fmt"
+    "github.com/7836246/kanggo"
+    "encoding/json"
+)
+
+func main() {
+    // 使用自定义的 JSON 编解码器配置
+    cfg := kanggo.Config{
+        JSONEncoder: json.Marshal,
+        JSONDecoder: json.Unmarshal,
+        ShowBanner:  true,
+    }
+
+    // 使用 Default() 初始化框架
+    app := kanggo.New(cfg)
+
+    // 注册静态路由
+    app.GET("/home", func(ctx kanggo.Context) error {
+        return ctx.SendString("Welcome to the home page!")
+    })
+
+    // 注册带命名参数的动态路由
+    app.GET("/user/:id", func(ctx kanggo.Context) error {
+        id := ctx.Param("id")
+        if id == "" {
+            return fmt.Errorf("id 参数缺失")
+        }
+        msg := fmt.Sprintf("用户ID：%s", id)
+        return ctx.SendString(msg)
+    })
+
+    // 启动服务器
+    app.Run(":8080")
+}
 ```
 
 ## 高级特性
