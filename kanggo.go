@@ -94,6 +94,6 @@ func (k *KangGo) Run(addr string) error {
 		WriteTimeout: k.Config.WriteTimeout, // 设置写入响应超时时间
 	}
 
-	fmt.Printf("KangGo 服务器正在运行，地址: %s\n", addr)
+	fmt.Printf("KangGo 服务器正在运行，地址 %s\n", addr)
 	return server.ListenAndServe()
 }

@@ -169,7 +169,7 @@
         <entry key="file://$PROJECT_DIR$/kanggo.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726257810274" />
+              <option name="lastModified" value="1726260650717" />
               <option name="schema">
                 <list>
                   <option value="KangGo" />
@@ -272,7 +272,7 @@
         <entry key="file://$PROJECT_DIR$/static.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726259343814" />
+              <option name="lastModified" value="1726260517839" />
               <option name="schema">
                 <list>
                   <option value="StaticConfig" />
