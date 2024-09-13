@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 )
 
@@ -76,27 +77,45 @@ func (r *Router) RegisterFileRoute(pattern, root string, handler HandlerFunc) {
 	})
 }
 
-// PrintRoutes 打印所有注册的路由信息，区分静态文件路由、普通静态路由和动态路由
+// PrintRoutes 打印所有注册的路由信息，区分目录文件路由、单文件路由、普通静态路由和动态路由
 func (r *Router) PrintRoutes() {
+	// 打印表头
 	fmt.Println("\n📋 已注册的路由信息:")
-	fmt.Println(strings.Repeat("=", 40))
+	fmt.Println(strings.Repeat("=", 60))
+	fmt.Printf("| %-10s | %-20s | %-20s |\n", "类型", "路由前缀", "映射路径")
+	fmt.Println(strings.Repeat("=", 60))
 
-	fmt.Println("▶️  静态文件路由:")
+	// 打印文件路由和目录路由
 	for _, fileRoute := range r.fileRoutes {
-		fmt.Printf("    GET  %s\n", fileRoute.Prefix)
+		// 判断是文件还是目录
+		routeType := "目录"
+		if isFile(fileRoute.Root) {
+			routeType = "文件"
+		}
+		fmt.Printf("| %-10s | %-20s | %-20s |\n", routeType, fileRoute.Prefix, fileRoute.Root)
 	}
 
-	fmt.Println("▶️  普通静态路由:")
+	// 打印普通静态路由
 	for _, staticRoute := range r.staticRoutes {
-		fmt.Printf("    GET  %s\n", staticRoute.Prefix)
+		fmt.Printf("| %-10s | %-20s | %-20s |\n", "静态", staticRoute.Prefix, "-")
 	}
 
-	fmt.Println("▶️  动态路由:")
+	// 打印动态路由
 	for _, route := range r.routes {
-		fmt.Printf("    %s  %s\n", route.Method, route.Pattern)
+		fmt.Printf("| %-10s | %-20s | %-20s |\n", "动态", route.Method, route.Pattern)
 	}
 
-	fmt.Println(strings.Repeat("=", 40))
+	// 打印表格结束线
+	fmt.Println(strings.Repeat("=", 60))
+}
+
+// isFile 检查给定的路径是否是文件
+func isFile(path string) bool {
+	info, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
+	return !info.IsDir()
 }
 
 // Handle 注册路由，判断是静态、文件还是动态路由
