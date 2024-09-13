@@ -29,12 +29,14 @@ type RouteInfo struct {
 
 // StaticRouteInfo 存储普通静态路由的信息
 type StaticRouteInfo struct {
+	Method  string // 新增字段，存储请求方法
 	Prefix  string
 	Handler HandlerFunc
 }
 
 // FileRouteInfo 存储文件路由的信息
 type FileRouteInfo struct {
+	Method  string // 新增字段，存储请求方法
 	Prefix  string
 	Root    string
 	Handler HandlerFunc
@@ -61,16 +63,18 @@ func NewRouter(cfg Config) *Router {
 }
 
 // RegisterStaticRoute 注册普通静态路由信息
-func (r *Router) RegisterStaticRoute(pattern string, handler HandlerFunc) {
+func (r *Router) RegisterStaticRoute(method, pattern string, handler HandlerFunc) {
 	r.staticRoutes = append(r.staticRoutes, StaticRouteInfo{
+		Method:  method,
 		Prefix:  pattern,
 		Handler: handler,
 	})
 }
 
 // RegisterFileRoute 注册文件路由信息
-func (r *Router) RegisterFileRoute(pattern, root string, handler HandlerFunc) {
+func (r *Router) RegisterFileRoute(method, pattern, root string, handler HandlerFunc) {
 	r.fileRoutes = append(r.fileRoutes, FileRouteInfo{
+		Method:  method,
 		Prefix:  pattern,
 		Root:    root,
 		Handler: handler,
@@ -92,12 +96,12 @@ func (r *Router) PrintRoutes() {
 		if isFile(fileRoute.Root) {
 			routeType = "文件"
 		}
-		fmt.Printf("| %-10s | %-10s | %-20s | %-20s |\n", routeType, "GET", fileRoute.Prefix, fileRoute.Root)
+		fmt.Printf("| %-10s | %-10s | %-20s | %-20s |\n", routeType, fileRoute.Method, fileRoute.Prefix, fileRoute.Root)
 	}
 
 	// 打印普通静态路由
 	for _, staticRoute := range r.staticRoutes {
-		fmt.Printf("| %-10s | %-10s | %-20s | %-20s |\n", "静态", "GET", staticRoute.Prefix, "-")
+		fmt.Printf("| %-10s | %-10s | %-20s | %-20s |\n", "静态", staticRoute.Method, staticRoute.Prefix, "-")
 	}
 
 	// 打印动态路由
@@ -140,10 +144,10 @@ func (r *Router) Handle(method, pattern string, handler HandlerFunc) {
 
 	// 判断是否为静态文件路由
 	if isFileRoute(pattern) {
-		r.RegisterFileRoute(pattern, "", handler)
+		r.RegisterFileRoute(method, pattern, "", handler)
 	} else if isStaticRoute(pattern) { // 判断是否为普通静态路由
 		// 注册静态路由
-		r.RegisterStaticRoute(pattern, handler)
+		r.RegisterStaticRoute(method, pattern, handler)
 	} else {
 		// 动态路由，存入 Radix Tree
 		r.insertDynamicRoute(method, pattern, handler)
