@@ -82,7 +82,7 @@ func TestGroupOtherMethods(t *testing.T) {
 
 	// 注册路由和测试
 	for _, m := range methods {
-		group.router.Handle(m.method, "/api"+m.pattern, func(ctx *Context) error {
+		group.Router.Handle(m.method, "/api"+m.pattern, func(ctx *Context) error {
 			ctx.SendString(m.body)
 			return nil
 		})

@@ -126,7 +126,7 @@
         <entry key="file://$PROJECT_DIR$/context.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726261279118" />
+              <option name="lastModified" value="1726261299201" />
               <option name="schema">
                 <list>
                   <option value="Context" />
@@ -138,7 +138,7 @@
         <entry key="file://$PROJECT_DIR$/group.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726257566661" />
+              <option name="lastModified" value="1726261666532" />
               <option name="schema">
                 <list>
                   <option value="Group" />
@@ -150,7 +150,7 @@
         <entry key="file://$PROJECT_DIR$/group_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726257945429" />
+              <option name="lastModified" value="1726261666500" />
             </ScannedPath>
           </value>
         </entry>
