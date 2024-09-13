@@ -31,6 +31,7 @@ type Router struct {
 	staticRoutes map[string]HandlerFunc // 静态路由哈希表
 	dynamicRoot  *RadixNode             // 动态路由的 Radix Tree 根节点
 	routes       []RouteInfo            // 存储所有注册的路由信息
+	staticPaths  []string               // 存储所有静态路由路径
 	config       Config                 // 添加配置到 Router 中
 }
 
@@ -41,7 +42,31 @@ func NewRouter(cfg Config) *Router {
 		dynamicRoot:  &RadixNode{children: make(map[string]*RadixNode)},
 		config:       cfg,
 		routes:       []RouteInfo{}, // 初始化路由信息列表
+		staticPaths:  []string{},    // 初始化静态路由列表
 	}
+}
+
+// RegisterStaticRoute 注册静态文件服务的路由信息
+func (r *Router) RegisterStaticRoute(pattern string) {
+	r.staticPaths = append(r.staticPaths, pattern)
+}
+
+// PrintRoutes 打印所有注册的路由信息，区分静态文件路由和普通路由
+func (r *Router) PrintRoutes() {
+	fmt.Println("\n📋 已注册的路由信息:")
+	fmt.Println(strings.Repeat("=", 40))
+
+	fmt.Println("▶️  静态文件路由:")
+	for _, staticPath := range r.staticPaths {
+		fmt.Printf("    GET  %s\n", staticPath)
+	}
+
+	fmt.Println("▶️  动态路由:")
+	for _, route := range r.routes {
+		fmt.Printf("    %s  %s\n", route.Method, route.Pattern)
+	}
+
+	fmt.Println(strings.Repeat("=", 40))
 }
 
 // Handle 注册路由，判断是静态还是动态路由
@@ -75,16 +100,6 @@ func (r *Router) Handle(method, pattern string, handler HandlerFunc) {
 
 	// 记录路由信息
 	r.routes = append(r.routes, RouteInfo{Method: method, Pattern: pattern})
-}
-
-// PrintRoutes 打印所有注册的路由信息
-func (r *Router) PrintRoutes() {
-	fmt.Println("\n📋 已注册的路由信息:")
-	fmt.Println(strings.Repeat("=", 40))
-	for _, route := range r.routes {
-		fmt.Printf("▶️  %s  %s\n", route.Method, route.Pattern)
-	}
-	fmt.Println(strings.Repeat("=", 40))
 }
 
 // isStaticRoute 判断是否为静态路由（不包含 ":" 或 "*"）

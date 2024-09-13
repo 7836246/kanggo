@@ -59,16 +59,9 @@ func (k *KangGo) Static(prefix, root string, config ...Static) *KangGo {
 			return nil
 		}
 
-		// 获取请求的文件路径
-		file := ctx.Request.URL.Path
-
-		// 如果请求的路径没有以指定的前缀开头，则返回 404
-		if !strings.HasPrefix(file, prefix) {
-			return ctx.SendString("404 未找到")
-		}
-
-		// 获取实际文件路径，去掉 URL 中的前缀部分
-		file = filepath.Join(root, strings.TrimPrefix(file, prefix))
+		// 获取请求的文件路径，去掉 URL 中的前缀部分
+		file := strings.TrimPrefix(ctx.Request.URL.Path, prefix)
+		file = filepath.Join(root, file)
 
 		// 检查文件或目录的状态
 		info, err := os.Stat(file)
@@ -119,7 +112,10 @@ func (k *KangGo) Static(prefix, root string, config ...Static) *KangGo {
 	}
 
 	// 注册静态文件服务的路由，使用通配符来匹配所有子路径
-	k.router.Handle("GET", prefix+"/*", wrappedHandler) // 使用符合 HandlerFunc 签名的 wrappedHandler
+	k.router.Handle("GET", prefix+"/*", wrappedHandler)
+
+	// 将静态文件路由信息记录下来，用于打印
+	k.router.RegisterStaticRoute(prefix + "/*")
 
 	return k
 }
