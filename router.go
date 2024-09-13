@@ -203,11 +203,12 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	// 创建 Context 时传递配置参数
 	ctx := NewContext(w, req, r.config)
 
-	// 查找文件路由
+	// 查找文件路由（通过 Static 注册）
 	for _, fileRoute := range r.fileRoutes {
 		if strings.HasPrefix(path, fileRoute.Prefix) {
 			// 去除前缀后，将路径传给文件服务器处理
-			req.URL.Path = strings.TrimPrefix(path, fileRoute.Prefix)
+			relativePath := strings.TrimPrefix(path, fileRoute.Prefix)
+			req.URL.Path = strings.TrimPrefix(relativePath, "/") // 去掉前导斜杠
 			if err := fileRoute.Handler(ctx); err != nil {
 				r.handleError(w, err)
 			}
@@ -215,7 +216,7 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	// 查找静态路由
+	// 查找普通静态路由
 	for _, staticRoute := range r.staticRoutes {
 		if strings.HasPrefix(path, staticRoute.Prefix) {
 			if err := staticRoute.Handler(ctx); err != nil {
