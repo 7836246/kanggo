@@ -17,7 +17,7 @@ KangGo 是一个极简且高性能的 Go Web 框架，致力于为开发者提�
 ### 安装
 
 ```bash
-go get -u github.com/7836246/kanggo
+go get -u github.com/7836246/kanggo@latest
 ```
 
 ### 使用示例
@@ -43,12 +43,12 @@ func main() {
     app := kanggo.New(cfg)
 
     // 注册静态路由
-    app.GET("/home", func(ctx kanggo.Context) error {
+    app.GET("/home", func(ctx *kanggo.Context) error {
         return ctx.SendString("Welcome to the home page!")
     })
 
     // 注册带命名参数的动态路由
-    app.GET("/user/:id", func(ctx kanggo.Context) error {
+    app.GET("/user/:id", func(ctx *kanggo.Context) error {
         id := ctx.Param("id")
         if id == "" {
             return fmt.Errorf("id 参数缺失")
