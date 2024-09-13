@@ -129,7 +129,7 @@ func (k *KangGo) Static(prefix, root string, config ...StaticConfig) *KangGo {
 	}
 
 	// 注册静态文件服务的路由
-	k.Router.RegisterFileRoute(prefix, root, wrappedHandler)
+	k.Router.RegisterFileRoute("GET", prefix, root, wrappedHandler)
 
 	return k
 }
