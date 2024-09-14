@@ -2,6 +2,7 @@ package kanggo
 
 import (
 	"fmt"
+	"github.com/7836246/kanggo/constants" // 引入 constants 包
 	"github.com/7836246/kanggo/core"
 	"net/http"
 )
@@ -57,47 +58,76 @@ func (k *KangGo) applyMiddleware(finalHandler http.HandlerFunc) http.HandlerFunc
 
 // GET 注册一个 GET 请求路由
 func (k *KangGo) GET(pattern string, handler HandlerFunc) {
-	k.Router.Handle("GET", pattern, handler)
+	k.Router.Handle(constants.MethodGet, pattern, handler)
 }
 
 // POST 注册一个 POST 请求路由
 func (k *KangGo) POST(pattern string, handler HandlerFunc) {
-	k.Router.Handle("POST", pattern, handler)
+	k.Router.Handle(constants.MethodPost, pattern, handler)
 }
 
 // PUT 注册一个 PUT 请求路由
 func (k *KangGo) PUT(pattern string, handler HandlerFunc) {
-	k.Router.Handle("PUT", pattern, handler)
+	k.Router.Handle(constants.MethodPut, pattern, handler)
 }
 
 // DELETE 注册一个 DELETE 请求路由
 func (k *KangGo) DELETE(pattern string, handler HandlerFunc) {
-	k.Router.Handle("DELETE", pattern, handler)
+	k.Router.Handle(constants.MethodDelete, pattern, handler)
 }
 
 // PATCH 注册一个 PATCH 请求路由
 func (k *KangGo) PATCH(pattern string, handler HandlerFunc) {
-	k.Router.Handle("PATCH", pattern, handler)
+	k.Router.Handle(constants.MethodPatch, pattern, handler)
 }
 
 // OPTIONS 注册一个 OPTIONS 请求路由
 func (k *KangGo) OPTIONS(pattern string, handler HandlerFunc) {
-	k.Router.Handle("OPTIONS", pattern, handler)
+	k.Router.Handle(constants.MethodOptions, pattern, handler)
 }
 
 // HEAD 注册一个 HEAD 请求路由
 func (k *KangGo) HEAD(pattern string, handler HandlerFunc) {
-	k.Router.Handle("HEAD", pattern, handler)
+	k.Router.Handle(constants.MethodHead, pattern, handler)
 }
 
 // TRACE 注册一个 TRACE 请求路由
 func (k *KangGo) TRACE(pattern string, handler HandlerFunc) {
-	k.Router.Handle("TRACE", pattern, handler)
+	k.Router.Handle(constants.MethodTrace, pattern, handler)
 }
 
 // CONNECT 注册一个 CONNECT 请求路由
 func (k *KangGo) CONNECT(pattern string, handler HandlerFunc) {
-	k.Router.Handle("CONNECT", pattern, handler)
+	k.Router.Handle(constants.MethodConnect, pattern, handler)
+}
+
+// Add 方法允许您指定一个方法作为值来注册一个路由
+func (k *KangGo) Add(method, path string, handlers ...HandlerFunc) *Router {
+	for _, handler := range handlers {
+		k.Router.Handle(method, path, handler)
+	}
+	return k.Router
+}
+
+// All 方法将给定路径注册到所有 HTTP 方法
+func (k *KangGo) All(path string, handlers ...HandlerFunc) *Router {
+	methods := []string{
+		constants.MethodGet,
+		constants.MethodPost,
+		constants.MethodPut,
+		constants.MethodDelete,
+		constants.MethodPatch,
+		constants.MethodOptions,
+		constants.MethodHead,
+		constants.MethodConnect,
+		constants.MethodTrace,
+	}
+
+	for _, method := range methods {
+		k.Add(method, path, handlers...)
+	}
+
+	return k.Router
 }
 
 // Run 启动 HTTP 服务器

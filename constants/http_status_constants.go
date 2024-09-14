@@ -1,0 +1,67 @@
+package constants
+
+// 定义 HTTP 状态码常量
+const (
+	StatusContinue                      = 100 // RFC 7231, 6.2.1：继续。客户端应继续其请求。
+	StatusSwitchingProtocols            = 101 // RFC 7231, 6.2.2：切换协议。服务器将切换到请求的协议。
+	StatusProcessing                    = 102 // RFC 2518, 10.1：处理。请求已被接受，正在处理，但未完成。
+	StatusEarlyHints                    = 103 // RFC 8297：早期提示。允许用户代理在最终响应之前开始预加载资源。
+	StatusOK                            = 200 // RFC 7231, 6.3.1：成功。请求已成功。
+	StatusCreated                       = 201 // RFC 7231, 6.3.2：已创建。请求已成功并创建了新资源。
+	StatusAccepted                      = 202 // RFC 7231, 6.3.3：已接受。请求已被接受用于处理，但尚未完成。
+	StatusNonAuthoritativeInformation   = 203 // RFC 7231, 6.3.4：非权威信息。请求已成功，但返回的元信息来自缓存。
+	StatusNoContent                     = 204 // RFC 7231, 6.3.5：无内容。服务器成功处理了请求，但没有返回任何内容。
+	StatusResetContent                  = 205 // RFC 7231, 6.3.6：重置内容。服务器成功处理了请求，用户代理应重置文档视图。
+	StatusPartialContent                = 206 // RFC 7233, 4.1：部分内容。服务器成功处理了部分 GET 请求。
+	StatusMultiStatus                   = 207 // RFC 4918, 11.1：多状态。服务器返回多个资源的状态。
+	StatusAlreadyReported               = 208 // RFC 5842, 7.1：已报告。DAV 锁定的成员资源的状态已被报告。
+	StatusIMUsed                        = 226 // RFC 3229, 10.4.1：IM 已使用。服务器已成功响应请求，并应用了 IM 变换。
+	StatusMultipleChoices               = 300 // RFC 7231, 6.4.1：多种选择。请求有多种可供选择的响应。
+	StatusMovedPermanently              = 301 // RFC 7231, 6.4.2：永久移动。请求的资源已永久移动到新位置。
+	StatusFound                         = 302 // RFC 7231, 6.4.3：找到。请求的资源暂时移动到新位置。
+	StatusSeeOther                      = 303 // RFC 7231, 6.4.4：查看其他位置。请求应使用另一个 URI 获取资源。
+	StatusNotModified                   = 304 // RFC 7232, 4.1：未修改。请求的资源未修改。
+	StatusUseProxy                      = 305 // RFC 7231, 6.4.5：使用代理。请求的资源必须通过代理访问。
+	StatusTemporaryRedirect             = 307 // RFC 7231, 6.4.7：临时重定向。请求的资源暂时移动到新位置。
+	StatusPermanentRedirect             = 308 // RFC 7538, 3：永久重定向。请求的资源已永久移动到新位置。
+	StatusBadRequest                    = 400 // RFC 7231, 6.5.1：错误请求。服务器无法理解请求。
+	StatusUnauthorized                  = 401 // RFC 7235, 3.1：未授权。请求需要用户认证。
+	StatusPaymentRequired               = 402 // RFC 7231, 6.5.2：需要付款。保留将来使用。
+	StatusForbidden                     = 403 // RFC 7231, 6.5.3：禁止。服务器拒绝请求。
+	StatusNotFound                      = 404 // RFC 7231, 6.5.4：未找到。请求的资源未找到。
+	StatusMethodNotAllowed              = 405 // RFC 7231, 6.5.5：方法不允许。请求的方法不允许。
+	StatusNotAcceptable                 = 406 // RFC 7231, 6.5.6：不可接受。请求的资源不可用。
+	StatusProxyAuthRequired             = 407 // RFC 7235, 3.2：需要代理认证。客户端必须先认证代理。
+	StatusRequestTimeout                = 408 // RFC 7231, 6.5.7：请求超时。服务器超时等待请求。
+	StatusConflict                      = 409 // RFC 7231, 6.5.8：冲突。请求与资源的当前状态冲突。
+	StatusGone                          = 410 // RFC 7231, 6.5.9：已删除。请求的资源已永久删除。
+	StatusLengthRequired                = 411 // RFC 7231, 6.5.10：需要有效长度。请求中缺少内容长度头。
+	StatusPreconditionFailed            = 412 // RFC 7232, 4.2：前提条件失败。请求头中指定的前提条件失败。
+	StatusRequestEntityTooLarge         = 413 // RFC 7231, 6.5.11：请求实体太大。请求的实体太大。
+	StatusRequestURITooLong             = 414 // RFC 7231, 6.5.12：请求 URI 太长。请求的 URI 太长。
+	StatusUnsupportedMediaType          = 415 // RFC 7231, 6.5.13：不支持的媒体类型。请求的格式不受支持。
+	StatusRequestedRangeNotSatisfiable  = 416 // RFC 7233, 4.4：请求范围不满足。请求的范围无效。
+	StatusExpectationFailed             = 417 // RFC 7231, 6.5.14：期望失败。服务器无法满足请求头的期望。
+	StatusTeapot                        = 418 // RFC 7168, 2.3.3：我是一个茶壶。拒绝冲咖啡的请求。
+	StatusMisdirectedRequest            = 421 // RFC 7540, 9.1.2：错误的请求。服务器无法产生响应。
+	StatusUnprocessableEntity           = 422 // RFC 4918, 11.2：无法处理的实体。请求格式正确，但无法处理。
+	StatusLocked                        = 423 // RFC 4918, 11.3：锁定。资源被锁定。
+	StatusFailedDependency              = 424 // RFC 4918, 11.4：依赖失败。由于之前的请求失败，无法处理。
+	StatusTooEarly                      = 425 // RFC 8470, 5.2.：过早。服务器不愿处理早期数据。
+	StatusUpgradeRequired               = 426 // RFC 7231, 6.5.15：需要升级。客户端应切换到不同协议。
+	StatusPreconditionRequired          = 428 // RFC 6585, 3：需要前提条件。请求头中需要前提条件。
+	StatusTooManyRequests               = 429 // RFC 6585, 4：请求过多。用户在给定的时间内发送了过多请求。
+	StatusRequestHeaderFieldsTooLarge   = 431 // RFC 6585, 5：请求头字段太大。请求头字段太大。
+	StatusUnavailableForLegalReasons    = 451 // RFC 7725, 3：因法律原因不可用。资源因法律要求而不可用。
+	StatusInternalServerError           = 500 // RFC 7231, 6.6.1：内部服务器错误。服务器遇到意外情况。
+	StatusNotImplemented                = 501 // RFC 7231, 6.6.2：未实现。服务器不支持请求的方法。
+	StatusBadGateway                    = 502 // RFC 7231, 6.6.3：错误网关。服务器作为网关时收到了无效响应。
+	StatusServiceUnavailable            = 503 // RFC 7231, 6.6.4：服务不可用。服务器目前无法处理请求。
+	StatusGatewayTimeout                = 504 // RFC 7231, 6.6.5：网关超时。服务器作为网关时未及时收到响应。
+	StatusHTTPVersionNotSupported       = 505 // RFC 7231, 6.6.6：HTTP 版本不支持。服务器不支持请求的 HTTP 版本。
+	StatusVariantAlsoNegotiates         = 506 // RFC 2295, 8.1：变体协商。服务器内部配置错误。
+	StatusInsufficientStorage           = 507 // RFC 4918, 11.5：存储空间不足。服务器无法存储完成请求的表示。
+	StatusLoopDetected                  = 508 // RFC 5842, 7.2：循环检测。服务器检测到循环。
+	StatusNotExtended                   = 510 // RFC 2774, 7：未扩展。需要进一步扩展请求。
+	StatusNetworkAuthenticationRequired = 511 // RFC 6585, 6：需要网络认证。需要客户端进行网络认证。
+)

@@ -2,6 +2,7 @@ package kanggo
 
 import (
 	"fmt"
+	"github.com/7836246/kanggo/constants"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -40,7 +41,6 @@ func NewStaticConfig() StaticConfig {
 
 // Static 注册一个静态文件服务路由
 func (k *KangGo) Static(prefix, root string, config ...StaticConfig) *KangGo {
-	// 使用默认的 Static 配置，如果用户提供了自定义配置，则使用用户的配置
 	cfg := NewStaticConfig()
 	if len(config) > 0 {
 		cfg = config[0]
@@ -54,83 +54,59 @@ func (k *KangGo) Static(prefix, root string, config ...StaticConfig) *KangGo {
 	// 去除前缀中的尾部斜杠，确保前缀统一
 	prefix = strings.TrimSuffix(prefix, "/")
 
-	// 处理静态文件请求的处理函数
 	handler := func(ctx *Context) error {
-		// 如果 Next 函数返回 true，跳过静态文件处理
 		if cfg.Next != nil && cfg.Next(ctx) {
 			return nil
 		}
 
-		// 获取请求路径并去掉前缀部分
+		// 获取相对路径
 		relativePath := strings.TrimPrefix(ctx.Request.URL.Path, prefix)
-		relativePath = strings.TrimPrefix(relativePath, "/") // 去掉可能的前导斜杠
+		relativePath = strings.TrimPrefix(relativePath, "/")
 		filePath := filepath.Join(root, relativePath)
-		// 调试信息
-		// fmt.Printf("请求的 URL 路径: %s\n", ctx.Request.URL.Path)
-		// fmt.Printf("去掉前缀后的相对路径: %s\n", relativePath)
-		// fmt.Printf("文件系统中的文件路径: %s\n", filePath)
 
 		// 检查文件或目录是否存在
 		info, err := os.Stat(filePath)
 		if os.IsNotExist(err) {
-			// fmt.Println("文件未找到: ", filePath)  // 添加调试信息
-			http.NotFound(ctx.Writer, ctx.Request) // 文件不存在，返回 404
+			http.NotFound(ctx.Writer, ctx.Request)
 			return nil
 		} else if err != nil {
-			// fmt.Println("无法获取文件信息: ", err)  // 添加调试信息
-			http.Error(ctx.Writer, "500 服务器内部错误", http.StatusInternalServerError) // 服务器内部错误，返回 500
+			http.Error(ctx.Writer, "500 服务器内部错误", http.StatusInternalServerError)
 			return nil
 		}
 
-		// 如果请求的是一个目录，则处理索引文件
+		// 处理目录请求
 		if info.IsDir() {
 			indexFile := filepath.Join(filePath, cfg.Index)
-			// fmt.Printf("请求的是一个目录，尝试提供索引文件: %s\n", indexFile)
 			if _, err := os.Stat(indexFile); err == nil {
 				http.ServeFile(ctx.Writer, ctx.Request, indexFile)
 				return nil
 			}
 			if cfg.Browse {
-				// 提供目录浏览（此功能可扩展实现）
 				return browseDirectory(ctx.Writer, filePath)
 			}
-			http.Error(ctx.Writer, "403 禁止访问目录", http.StatusForbidden) // 禁止访问目录，返回 403
+			http.Error(ctx.Writer, "403 禁止访问目录", http.StatusForbidden)
 			return nil
 		}
 
-		// 设置缓存控制头
+		// 处理文件请求
 		if cfg.MaxAge > 0 {
 			ctx.Writer.Header().Set("Cache-Control", "public, max-age="+strconv.Itoa(cfg.MaxAge))
 		}
-
-		// 启用字节范围请求
 		if cfg.ByteRange {
 			ctx.Writer.Header().Set("Accept-Ranges", "bytes")
 		}
-
-		// 启用文件下载选项时设置 Content-Disposition 头
 		if cfg.Download {
 			ctx.Writer.Header().Set("Content-Disposition", "attachment")
 		}
-
-		// 调用自定义响应修改函数（如果已定义）
 		if cfg.ModifyResponse != nil {
 			cfg.ModifyResponse(ctx.Writer, ctx.Request)
 		}
 
-		// 使用 http.ServeFile 提供文件
 		http.ServeFile(ctx.Writer, ctx.Request, filePath)
 		return nil
 	}
 
-	// 将 handler 函数转换为 HandlerFunc 类型的闭包
-	wrappedHandler := func(ctx *Context) error {
-		return handler(ctx)
-	}
-
-	// 注册静态文件服务的路由
-	k.Router.RegisterFileRoute("GET", prefix, root, wrappedHandler)
-
+	k.Router.Handle(constants.MethodGet, prefix+"/*", handler)
 	return k
 }
 

@@ -140,10 +140,38 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/constants/http_headers_constants.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726310910298" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/constants/http_methods.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726310649878" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/constants/http_status_constants.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726311058031" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/constants/mime_constants.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726310792557" />
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/context.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726261299201" />
+              <option name="lastModified" value="1726311306981" />
               <option name="schema">
                 <list>
                   <option value="Context" />
@@ -174,7 +202,7 @@
         <entry key="file://$PROJECT_DIR$/group.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726261685951" />
+              <option name="lastModified" value="1726310600449" />
               <option name="schema">
                 <list>
                   <option value="Group" />
@@ -205,7 +233,7 @@
         <entry key="file://$PROJECT_DIR$/kanggo.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726277756593" />
+              <option name="lastModified" value="1726310551000" />
               <option name="schema">
                 <list>
                   <option value="KangGo" />
@@ -386,7 +414,7 @@
         <entry key="file://$PROJECT_DIR$/router.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726278125782" />
+              <option name="lastModified" value="1726310380047" />
               <option name="schema">
                 <list>
                   <option value="RadixNode" />
@@ -399,10 +427,17 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/router_test.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726310389493" />
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/static.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726260517839" />
+              <option name="lastModified" value="1726310649863" />
               <option name="schema">
                 <list>
                   <option value="StaticConfig" />

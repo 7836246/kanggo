@@ -2,7 +2,10 @@ package kanggo
 
 import (
 	"encoding/json"
+	"github.com/7836246/kanggo/constants"
+	"io"
 	"net/http"
+	"os"
 	"reflect"
 	"strconv"
 )
@@ -120,7 +123,7 @@ func (c *Context) JSON(code int, obj interface{}) error {
 	if err != nil {
 		return err
 	}
-	c.Writer.Header().Set("Content-Type", "application/json")
+	c.Writer.Header().Set(constants.HeaderContentType, constants.MIMEApplicationJSON) // 使用常量
 	c.Writer.WriteHeader(code)
 	_, err = c.Writer.Write(data)
 	return err
@@ -132,21 +135,65 @@ func (c *Context) JSONP(callback string, obj interface{}) error {
 	if err != nil {
 		return err
 	}
-	c.Writer.Header().Set("Content-Type", "application/javascript")
+	c.Writer.Header().Set(constants.HeaderContentType, constants.MIMEApplicationJavaScript) // 使用常量
 	_, err = c.Writer.Write([]byte(callback + "(" + string(data) + ");"))
 	return err
 }
 
 // SendString 返回一个纯文本响应
 func (c *Context) SendString(msg string) error {
-	c.Writer.Header().Set("Content-Type", "text/plain")
+	c.Writer.Header().Set(constants.HeaderContentType, constants.MIMETextPlain) // 使用常量
 	_, err := c.Writer.Write([]byte(msg))
 	return err
 }
 
 // SendHTML 返回一个 HTML 响应
 func (c *Context) SendHTML(html string) error {
-	c.Writer.Header().Set("Content-Type", "text/html")
+	c.Writer.Header().Set(constants.HeaderContentType, constants.MIMETextHTML) // 使用常量
 	_, err := c.Writer.Write([]byte(html))
+	return err
+}
+
+// SendError 返回一个错误响应
+func (c *Context) SendError(code int, message string) error {
+	c.Writer.Header().Set(constants.HeaderContentType, constants.MIMETextPlain) // 使用常量
+	c.Writer.WriteHeader(code)
+	_, err := c.Writer.Write([]byte(message))
+	return err
+}
+
+// SendFile 发送文件作为响应
+func (c *Context) SendFile(filepath string, download bool) error {
+	// 检查文件是否存在
+	file, err := os.Open(filepath)
+	if err != nil {
+		http.Error(c.Writer, "文件未找到", http.StatusNotFound)
+		return err
+	}
+	defer func(file *os.File) {
+		err = file.Close()
+	}(file)
+
+	// 获取文件信息
+	fileInfo, err := file.Stat()
+	if err != nil {
+		http.Error(c.Writer, "服务器错误", http.StatusInternalServerError)
+		return err
+	}
+
+	// 设置响应头的 Content-Type
+	mimeType := http.DetectContentType(make([]byte, 512))
+	c.Writer.Header().Set(constants.HeaderContentType, mimeType)
+
+	// 设置 Content-Disposition 头以启用下载
+	if download {
+		c.Writer.Header().Set("Content-Disposition", "attachment; filename=\""+fileInfo.Name()+"\"")
+	}
+
+	// 设置 Content-Length 头
+	c.Writer.Header().Set("Content-Length", strconv.FormatInt(fileInfo.Size(), 10))
+
+	// 发送文件内容
+	_, err = io.Copy(c.Writer, file)
 	return err
 }

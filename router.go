@@ -129,7 +129,7 @@ func isFile(path string) bool {
 	return !info.IsDir()
 }
 
-// Handle 注册路由，判断是静态、文件还是动态路由
+// Handle 注册路由
 func (r *Router) Handle(method, pattern string, handler HandlerFunc) {
 	// 根据配置决定是否对路由进行大小写转换
 	if !r.config.CaseSensitiveRouting {
@@ -149,11 +149,13 @@ func (r *Router) Handle(method, pattern string, handler HandlerFunc) {
 		}
 	}
 
-	// 判断是否为静态文件路由
-	if isFileRoute(pattern) {
-		r.RegisterFileRoute(method, pattern, "", handler)
-	} else if isStaticRoute(pattern) { // 判断是否为普通静态路由
-		// 注册静态路由
+	// 判断是否为文件路由
+	if strings.HasSuffix(pattern, "/*") {
+		// 注册文件路由
+		filePattern := strings.TrimSuffix(pattern, "/*")
+		r.RegisterFileRoute(method, filePattern, "", handler)
+	} else if isStaticRoute(pattern) {
+		// 判断是否为普通静态路由
 		r.RegisterStaticRoute(method, pattern, handler)
 	} else {
 		// 动态路由，存入 Radix Tree
