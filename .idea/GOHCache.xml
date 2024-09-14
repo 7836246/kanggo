@@ -353,7 +353,7 @@
         <entry key="file://$PROJECT_DIR$/router.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726277756645" />
+              <option name="lastModified" value="1726278125782" />
               <option name="schema">
                 <list>
                   <option value="RadixNode" />
@@ -388,7 +388,7 @@
         <entry key="file://$PROJECT_DIR$/../kanggo_test/main.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726260089770" />
+              <option name="lastModified" value="1726278663006" />
             </ScannedPath>
           </value>
         </entry>
