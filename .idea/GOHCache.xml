@@ -61,6 +61,13 @@
             </set>
           </value>
         </entry>
+        <entry key="ResponseRecorder">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/middleware/etag/response_recorder.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="RouteInfo">
           <value>
             <set>
@@ -310,6 +317,32 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/etag/etag.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726308941083" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/etag/etag_test.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726308871297" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/etag/response_recorder.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726308855881" />
+              <option name="schema">
+                <list>
+                  <option value="ResponseRecorder" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/middleware/logger.go">
           <value>
             <ScannedPath>
@@ -403,6 +436,7 @@
         <entry key="group" value="Group" />
         <entry key="kang_go" value="KangGo" />
         <entry key="radix_node" value="RadixNode" />
+        <entry key="response_recorder" value="ResponseRecorder" />
         <entry key="route_info" value="RouteInfo" />
         <entry key="router" value="Router" />
         <entry key="static" value="Static" />
