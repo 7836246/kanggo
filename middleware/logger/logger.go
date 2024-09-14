@@ -1,16 +1,14 @@
-package kanggo
+package logger
 
 import (
+	"github.com/7836246/kanggo/core"
 	"log"
 	"net/http"
 	"time"
 )
 
-// MiddlewareFunc 定义中间件函数的类型
-type MiddlewareFunc func(http.HandlerFunc) http.HandlerFunc
-
 // Logger 中间件，用于记录请求处理时间
-func Logger() MiddlewareFunc {
+func Logger() core.MiddlewareFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			start := time.Now()

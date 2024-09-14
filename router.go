@@ -2,6 +2,7 @@ package kanggo
 
 import (
 	"fmt"
+	"github.com/7836246/kanggo/core"
 	"net/http"
 	"net/url"
 	"os"
@@ -44,16 +45,16 @@ type FileRouteInfo struct {
 
 // Router 路由结构
 type Router struct {
-	staticRoutes []StaticRouteInfo // 普通静态路由列表
-	fileRoutes   []FileRouteInfo   // 文件路由列表
-	dynamicRoot  *RadixNode        // 动态路由的 Radix Tree 根节点
-	routes       []RouteInfo       // 存储所有注册的动态路由信息
-	config       Config            // 添加配置到 Router 中
-	middleware   []MiddlewareFunc  // 中间件切片
+	staticRoutes []StaticRouteInfo     // 普通静态路由列表
+	fileRoutes   []FileRouteInfo       // 文件路由列表
+	dynamicRoot  *RadixNode            // 动态路由的 Radix Tree 根节点
+	routes       []RouteInfo           // 存储所有注册的动态路由信息
+	config       Config                // 添加配置到 Router 中
+	middleware   []core.MiddlewareFunc // 中间件切片
 }
 
 // Use 方法注册中间件到路由器
-func (r *Router) Use(mw MiddlewareFunc) {
+func (r *Router) Use(mw core.MiddlewareFunc) {
 	r.middleware = append(r.middleware, mw)
 }
 

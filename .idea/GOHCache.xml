@@ -24,6 +24,8 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/cors.go" />
+              <option value="file://$PROJECT_DIR$/middleware/cors.go" />
+              <option value="file://$PROJECT_DIR$/middleware/cors/cors.go" />
             </set>
           </value>
         </entry>
@@ -143,6 +145,13 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/core/core.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726277756689" />
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/cors.go">
           <value>
             <ScannedPath>
@@ -189,7 +198,7 @@
         <entry key="file://$PROJECT_DIR$/kanggo.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726277035308" />
+              <option name="lastModified" value="1726277756593" />
               <option name="schema">
                 <list>
                   <option value="KangGo" />
@@ -264,14 +273,68 @@
         <entry key="file://$PROJECT_DIR$/middleware.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726277012272" />
+              <option name="lastModified" value="1726277386621" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/Logger.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726277268497" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/cors.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726277386608" />
+              <option name="schema">
+                <list>
+                  <option value="CorsConfig" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/cors/cors.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726277870176" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/cors/ors_test.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726277843953" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/logger.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726277386563" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/logger/logger.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726277756586" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/logger/logger_test.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726277786975" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726276849587" />
+              <option name="lastModified" value="1726277579856" />
             </ScannedPath>
           </value>
         </entry>
@@ -290,7 +353,7 @@
         <entry key="file://$PROJECT_DIR$/router.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726276931349" />
+              <option name="lastModified" value="1726277756645" />
               <option name="schema">
                 <list>
                   <option value="RadixNode" />

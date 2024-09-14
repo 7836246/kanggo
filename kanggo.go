@@ -2,6 +2,7 @@ package kanggo
 
 import (
 	"fmt"
+	"github.com/7836246/kanggo/core"
 	"net/http"
 )
 
@@ -9,7 +10,7 @@ import (
 type KangGo struct {
 	Router     *Router
 	Config     Config
-	middleware []MiddlewareFunc // 用于存储中间件函数的切片
+	middleware []core.MiddlewareFunc // 用于存储中间件函数的切片
 }
 
 // Default 创建一个带有默认设置的 KangGo 实例
@@ -25,7 +26,7 @@ func New(cfg Config) *KangGo {
 	k := &KangGo{
 		Router:     NewRouter(cfg), // 将配置传递给 NewRouter
 		Config:     cfg,
-		middleware: []MiddlewareFunc{}, // 初始化中间件切片
+		middleware: []core.MiddlewareFunc{}, // 初始化中间件切片
 	}
 
 	// 根据配置决定是否打印横幅
@@ -42,7 +43,7 @@ func New(cfg Config) *KangGo {
 }
 
 // Use 注册一个中间件
-func (k *KangGo) Use(middleware MiddlewareFunc) {
+func (k *KangGo) Use(middleware core.MiddlewareFunc) {
 	k.middleware = append(k.middleware, middleware)
 }
 
