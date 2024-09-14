@@ -7,8 +7,9 @@ import (
 
 // KangGo 核心结构
 type KangGo struct {
-	Router *Router
-	Config Config
+	Router     *Router
+	Config     Config
+	middleware []MiddlewareFunc // 用于存储中间件函数的切片
 }
 
 // Default 创建一个带有默认设置的 KangGo 实例
@@ -22,8 +23,9 @@ func Default() *KangGo {
 func New(cfg Config) *KangGo {
 	// 创建 KangGo 实例
 	k := &KangGo{
-		Router: NewRouter(cfg), // 将配置传递给 NewRouter
-		Config: cfg,
+		Router:     NewRouter(cfg), // 将配置传递给 NewRouter
+		Config:     cfg,
+		middleware: []MiddlewareFunc{}, // 初始化中间件切片
 	}
 
 	// 根据配置决定是否打印横幅
@@ -31,7 +33,25 @@ func New(cfg Config) *KangGo {
 		PrintWelcomeBanner()
 	}
 
+	// 注册应用级别的中间件到 Router
+	k.Router.Use(func(next http.HandlerFunc) http.HandlerFunc { // 确保符合 MiddlewareFunc 类型
+		return k.applyMiddleware(next)
+	})
+
 	return k
+}
+
+// Use 注册一个中间件
+func (k *KangGo) Use(middleware MiddlewareFunc) {
+	k.middleware = append(k.middleware, middleware)
+}
+
+// applyMiddleware 应用中间件链到最终处理程序
+func (k *KangGo) applyMiddleware(finalHandler http.HandlerFunc) http.HandlerFunc {
+	for i := len(k.middleware) - 1; i >= 0; i-- {
+		finalHandler = k.middleware[i](finalHandler) // 使用中间件包装处理程序
+	}
+	return finalHandler
 }
 
 // GET 注册一个 GET 请求路由

@@ -49,6 +49,12 @@ type Router struct {
 	dynamicRoot  *RadixNode        // 动态路由的 Radix Tree 根节点
 	routes       []RouteInfo       // 存储所有注册的动态路由信息
 	config       Config            // 添加配置到 Router 中
+	middleware   []MiddlewareFunc  // 中间件切片
+}
+
+// Use 方法注册中间件到路由器
+func (r *Router) Use(mw MiddlewareFunc) {
+	r.middleware = append(r.middleware, mw)
 }
 
 // NewRouter 创建一个新的路由器
@@ -226,38 +232,49 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	// 创建 Context 时传递配置参数
 	ctx := NewContext(w, req, r.config)
 
-	// 查找文件路由
-	for _, fileRoute := range r.fileRoutes {
-		if path == fileRoute.Prefix || strings.HasPrefix(path, fileRoute.Prefix+"/") {
-			// 去除前缀后，将路径传给文件服务器处理
-			req.URL.Path = strings.TrimPrefix(path, fileRoute.Prefix)
-			if err := fileRoute.Handler(ctx); err != nil {
+	// 最终的处理函数，实际处理请求逻辑
+	finalHandler := http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		// 查找文件路由
+		for _, fileRoute := range r.fileRoutes {
+			if path == fileRoute.Prefix || strings.HasPrefix(path, fileRoute.Prefix+"/") {
+				req.URL.Path = strings.TrimPrefix(path, fileRoute.Prefix)
+				if err := fileRoute.Handler(ctx); err != nil {
+					r.handleError(w, err)
+				}
+				return
+			}
+		}
+
+		// 查找静态路由
+		for _, staticRoute := range r.staticRoutes {
+			if path == staticRoute.Prefix {
+				if err := staticRoute.Handler(ctx); err != nil {
+					r.handleError(w, err)
+				}
+				return
+			}
+		}
+
+		// 查找动态路由
+		if handler, found := r.searchDynamicRoute(req.Method, path, ctx); found {
+			if err := handler(ctx); err != nil {
 				r.handleError(w, err)
 			}
 			return
 		}
+
+		// 如果没有匹配的路由，返回 404
+		http.NotFound(w, req)
+	})
+
+	// 应用所有中间件，注意类型转换
+	wrappedHandler := finalHandler
+	for i := len(r.middleware) - 1; i >= 0; i-- {
+		wrappedHandler = r.middleware[i](wrappedHandler)
 	}
 
-	// 查找静态路由
-	for _, staticRoute := range r.staticRoutes {
-		// 确保路径完全匹配
-		if path == staticRoute.Prefix {
-			if err := staticRoute.Handler(ctx); err != nil {
-				r.handleError(w, err)
-			}
-			return
-		}
-	}
-
-	// 查找动态路由
-	if handler, found := r.searchDynamicRoute(req.Method, path, ctx); found {
-		if err := handler(ctx); err != nil {
-			r.handleError(w, err) // 处理错误
-		}
-		return
-	}
-
-	http.NotFound(w, req)
+	// 处理最终的请求
+	wrappedHandler.ServeHTTP(w, req)
 }
 
 // searchDynamicRoute 在 Radix Tree 中查找动态路由
