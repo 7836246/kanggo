@@ -12,11 +12,12 @@ import (
 
 // Context 代表 HTTP 请求的上下文
 type Context struct {
-	Writer      http.ResponseWriter
-	Request     *http.Request
-	Params      map[string]string
-	jsonEncoder func(v interface{}) ([]byte, error)
-	jsonDecoder func(data []byte, v interface{}) error
+	Writer         http.ResponseWriter
+	Request        *http.Request
+	Params         map[string]string
+	jsonEncoder    func(v interface{}) ([]byte, error)
+	jsonDecoder    func(data []byte, v interface{}) error
+	TemplateEngine TemplateEngine
 }
 
 // NewContext 创建一个新的 Context 实例
@@ -196,4 +197,13 @@ func (c *Context) SendFile(filepath string, download bool) error {
 	// 发送文件内容
 	_, err = io.Copy(c.Writer, file)
 	return err
+}
+
+// Render 渲染模板
+func (c *Context) Render(name string, data interface{}) error {
+	if c.TemplateEngine == nil {
+		http.Error(c.Writer, "未配置模板引擎", http.StatusInternalServerError)
+		return nil
+	}
+	return c.TemplateEngine.Render(c.Writer, name, data)
 }

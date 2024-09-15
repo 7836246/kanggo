@@ -31,6 +31,13 @@
             </set>
           </value>
         </entry>
+        <entry key="HTMLTemplateEngine">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/html_template_engine.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="KangGo">
           <value>
             <set>
@@ -77,6 +84,13 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/router.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="TextTemplateEngine">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/text_template_engine.go" />
             </set>
           </value>
         </entry>
@@ -127,7 +141,7 @@
         <entry key="file://$PROJECT_DIR$/context.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726311325055" />
+              <option name="lastModified" value="1726437416809" />
               <option name="schema">
                 <list>
                   <option value="Context" />
@@ -159,6 +173,18 @@
           <value>
             <ScannedPath>
               <option name="lastModified" value="1726261686028" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/html_template_engine.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726437493840" />
+              <option name="schema">
+                <list>
+                  <option value="HTMLTemplateEngine" />
+                </list>
+              </option>
             </ScannedPath>
           </value>
         </entry>
@@ -284,6 +310,32 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/template_engine.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726437335650" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/template_engine_test.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726437910164" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/text_template_engine.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726437493835" />
+              <option name="schema">
+                <list>
+                  <option value="TextTemplateEngine" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/version/version.go">
           <value>
             <ScannedPath>
@@ -299,6 +351,7 @@
         <entry key="context" value="Context" />
         <entry key="file_route_info" value="FileRouteInfo" />
         <entry key="group" value="Group" />
+        <entry key="html_template_engine" value="HTMLTemplateEngine" />
         <entry key="kang_go" value="KangGo" />
         <entry key="radix_node" value="RadixNode" />
         <entry key="response_recorder" value="ResponseRecorder" />
@@ -306,6 +359,7 @@
         <entry key="router" value="Router" />
         <entry key="static_config" value="StaticConfig" />
         <entry key="static_route_info" value="StaticRouteInfo" />
+        <entry key="text_template_engine" value="TextTemplateEngine" />
       </map>
     </option>
     <option name="lastTimeChecked" value="1726436489745" />
