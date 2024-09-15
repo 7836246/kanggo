@@ -7,8 +7,6 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/config.go" />
-              <option value="file://$PROJECT_DIR$/config/config.go" />
-              <option value="file://$PROJECT_DIR$/kanggo/config/config.go" />
             </set>
           </value>
         </entry>
@@ -16,16 +14,6 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/context.go" />
-              <option value="file://$PROJECT_DIR$/kanggo/context.go" />
-            </set>
-          </value>
-        </entry>
-        <entry key="CorsConfig">
-          <value>
-            <set>
-              <option value="file://$PROJECT_DIR$/cors.go" />
-              <option value="file://$PROJECT_DIR$/middleware/cors.go" />
-              <option value="file://$PROJECT_DIR$/middleware/cors/cors.go" />
             </set>
           </value>
         </entry>
@@ -47,16 +35,12 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/kanggo.go" />
-              <option value="file://$PROJECT_DIR$/kanggo/kanggo.go" />
-              <option value="file://$PROJECT_DIR$/middleware.go" />
-              <option value="file://$PROJECT_DIR$/pkg/server.go" />
             </set>
           </value>
         </entry>
         <entry key="RadixNode">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/kanggo/router.go" />
               <option value="file://$PROJECT_DIR$/router.go" />
             </set>
           </value>
@@ -78,16 +62,7 @@
         <entry key="Router">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/internal/router.go" />
-              <option value="file://$PROJECT_DIR$/kanggo/router.go" />
               <option value="file://$PROJECT_DIR$/router.go" />
-            </set>
-          </value>
-        </entry>
-        <entry key="Static">
-          <value>
-            <set>
-              <option value="file://$PROJECT_DIR$/static.go" />
             </set>
           </value>
         </entry>
@@ -109,29 +84,10 @@
     </option>
     <option name="scannedPathMapping">
       <map>
-        <entry key="file://$PROJECT_DIR$/cmd/main.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1726245349737" />
-            </ScannedPath>
-          </value>
-        </entry>
         <entry key="file://$PROJECT_DIR$/config.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726256994212" />
-              <option name="schema">
-                <list>
-                  <option value="Config" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/config/config.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1726251076742" />
+              <option name="lastModified" value="1726257279577" />
               <option name="schema">
                 <list>
                   <option value="Config" />
@@ -143,35 +99,35 @@
         <entry key="file://$PROJECT_DIR$/constants/http_headers_constants.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726311384063" />
+              <option name="lastModified" value="1726311384424" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/constants/http_methods.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726311384046" />
+              <option name="lastModified" value="1726311384424" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/constants/http_status_constants.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726311384065" />
+              <option name="lastModified" value="1726311384425" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/constants/mime_constants.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726311384055" />
+              <option name="lastModified" value="1726311384425" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/context.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726311306981" />
+              <option name="lastModified" value="1726311325055" />
               <option name="schema">
                 <list>
                   <option value="Context" />
@@ -187,22 +143,10 @@
             </ScannedPath>
           </value>
         </entry>
-        <entry key="file://$PROJECT_DIR$/cors.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1726277012267" />
-              <option name="schema">
-                <list>
-                  <option value="CorsConfig" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
         <entry key="file://$PROJECT_DIR$/group.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726311384155" />
+              <option name="lastModified" value="1726311384372" />
               <option name="schema">
                 <list>
                   <option value="Group" />
@@ -214,118 +158,17 @@
         <entry key="file://$PROJECT_DIR$/group_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726261685972" />
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/internal/router.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1726245349770" />
-              <option name="schema">
-                <list>
-                  <option value="Router" />
-                </list>
-              </option>
+              <option name="lastModified" value="1726261686028" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/kanggo.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726311384195" />
+              <option name="lastModified" value="1726311384373" />
               <option name="schema">
                 <list>
                   <option value="KangGo" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/kanggo/config/config.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1726250198648" />
-              <option name="schema">
-                <list>
-                  <option value="Config" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/kanggo/context.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1726249684017" />
-              <option name="schema">
-                <list>
-                  <option value="Context" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/kanggo/kanggo.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1726250334368" />
-              <option name="schema">
-                <list>
-                  <option value="KangGo" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/kanggo/router.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1726250521457" />
-              <option name="schema">
-                <list>
-                  <option value="RadixNode" />
-                  <option value="Router" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/kanggo/version/version.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1726246948948" />
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/main.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1726250363874" />
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/middleware.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1726277386621" />
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/middleware/Logger.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1726277268497" />
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/middleware/cors.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1726277386608" />
-              <option name="schema">
-                <list>
-                  <option value="CorsConfig" />
                 </list>
               </option>
             </ScannedPath>
@@ -334,35 +177,35 @@
         <entry key="file://$PROJECT_DIR$/middleware/cors/cors.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726277870176" />
+              <option name="lastModified" value="1726278125891" />
             </ScannedPath>
           </value>
         </entry>
-        <entry key="file://$PROJECT_DIR$/middleware/cors/ors_test.go">
+        <entry key="file://$PROJECT_DIR$/middleware/cors/cors_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726277843953" />
+              <option name="lastModified" value="1726278125891" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/etag/etag.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726308941083" />
+              <option name="lastModified" value="1726309160054" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/etag/etag_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726308871297" />
+              <option name="lastModified" value="1726309160055" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/etag/response_recorder.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726308855881" />
+              <option name="lastModified" value="1726309160055" />
               <option name="schema">
                 <list>
                   <option value="ResponseRecorder" />
@@ -371,50 +214,38 @@
             </ScannedPath>
           </value>
         </entry>
-        <entry key="file://$PROJECT_DIR$/middleware/logger.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1726277386563" />
-            </ScannedPath>
-          </value>
-        </entry>
         <entry key="file://$PROJECT_DIR$/middleware/logger/logger.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726277756586" />
+              <option name="lastModified" value="1726278125945" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/logger/logger_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726277786975" />
+              <option name="lastModified" value="1726278125945" />
             </ScannedPath>
           </value>
         </entry>
-        <entry key="file://$PROJECT_DIR$/middleware_test.go">
+        <entry key="file://$PROJECT_DIR$/middleware/recovery/recovery.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726277579856" />
+              <option name="lastModified" value="1726436764409" />
             </ScannedPath>
           </value>
         </entry>
-        <entry key="file://$PROJECT_DIR$/pkg/server.go">
+        <entry key="file://$PROJECT_DIR$/middleware/recovery/recovery_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726245349798" />
-              <option name="schema">
-                <list>
-                  <option value="KangGo" />
-                </list>
-              </option>
+              <option name="lastModified" value="1726436781142" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/router.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726311384090" />
+              <option name="lastModified" value="1726311384373" />
               <option name="schema">
                 <list>
                   <option value="RadixNode" />
@@ -430,14 +261,14 @@
         <entry key="file://$PROJECT_DIR$/router_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726311384052" />
+              <option name="lastModified" value="1726311384373" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/static.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726311384173" />
+              <option name="lastModified" value="1726311384374" />
               <option name="schema">
                 <list>
                   <option value="StaticConfig" />
@@ -449,14 +280,14 @@
         <entry key="file://$PROJECT_DIR$/static_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726258333614" />
+              <option name="lastModified" value="1726258333699" />
             </ScannedPath>
           </value>
         </entry>
-        <entry key="file://$PROJECT_DIR$/../kanggo_test/main.go">
+        <entry key="file://$PROJECT_DIR$/version/version.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726278663006" />
+              <option name="lastModified" value="1726311650144" />
             </ScannedPath>
           </value>
         </entry>
@@ -466,7 +297,6 @@
       <map>
         <entry key="config" value="Config" />
         <entry key="context" value="Context" />
-        <entry key="cors_config" value="CorsConfig" />
         <entry key="file_route_info" value="FileRouteInfo" />
         <entry key="group" value="Group" />
         <entry key="kang_go" value="KangGo" />
@@ -474,11 +304,10 @@
         <entry key="response_recorder" value="ResponseRecorder" />
         <entry key="route_info" value="RouteInfo" />
         <entry key="router" value="Router" />
-        <entry key="static" value="Static" />
         <entry key="static_config" value="StaticConfig" />
         <entry key="static_route_info" value="StaticRouteInfo" />
       </map>
     </option>
-    <option name="lastTimeChecked" value="1726244931218" />
+    <option name="lastTimeChecked" value="1726436489745" />
   </component>
 </project>
