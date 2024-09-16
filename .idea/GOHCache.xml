@@ -14,6 +14,7 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/context.go" />
+              <option value="file://$PROJECT_DIR$/middleware/session/session.go" />
             </set>
           </value>
         </entry>
@@ -45,6 +46,20 @@
             </set>
           </value>
         </entry>
+        <entry key="MemorySessionStore">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/middleware/session/session.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="MemoryStore">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/middleware/session/session.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="RadixNode">
           <value>
             <set>
@@ -70,6 +85,13 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/router.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="SessionContext">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/middleware/session/session.go" />
             </set>
           </value>
         </entry>
@@ -141,7 +163,7 @@
         <entry key="file://$PROJECT_DIR$/context.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726437416809" />
+              <option name="lastModified" value="1726437930548" />
               <option name="schema">
                 <list>
                   <option value="Context" />
@@ -268,6 +290,19 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/session/session.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726459291341" />
+              <option name="schema">
+                <list>
+                  <option value="MemoryStore" />
+                  <option value="Context" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/router.go">
           <value>
             <ScannedPath>
@@ -353,10 +388,13 @@
         <entry key="group" value="Group" />
         <entry key="html_template_engine" value="HTMLTemplateEngine" />
         <entry key="kang_go" value="KangGo" />
+        <entry key="memory_session_store" value="MemorySessionStore" />
+        <entry key="memory_store" value="MemoryStore" />
         <entry key="radix_node" value="RadixNode" />
         <entry key="response_recorder" value="ResponseRecorder" />
         <entry key="route_info" value="RouteInfo" />
         <entry key="router" value="Router" />
+        <entry key="session_context" value="SessionContext" />
         <entry key="static_config" value="StaticConfig" />
         <entry key="static_route_info" value="StaticRouteInfo" />
         <entry key="text_template_engine" value="TextTemplateEngine" />
