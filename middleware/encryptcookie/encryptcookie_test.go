@@ -6,9 +6,9 @@ import (
 	"testing"
 
 	"github.com/7836246/kanggo"
-	"github.com/stretchr/testify/assert"
 )
 
+// 测试 EncryptCookie 中间件
 func TestEncryptCookieMiddleware(t *testing.T) {
 	// 创建 KangGo 实例
 	app := kanggo.Default()
@@ -37,17 +37,32 @@ func TestEncryptCookieMiddleware(t *testing.T) {
 	req := httptest.NewRequest("GET", "/set", nil)
 	resp := httptest.NewRecorder()
 	app.Router.ServeHTTP(resp, req)
-	assert.Equal(t, 200, resp.Code)
+
+	// 验证响应状态码
+	if resp.Code != http.StatusOK {
+		t.Fatalf("期望状态码 %d，得到 %d", http.StatusOK, resp.Code)
+	}
 
 	// 获取加密后的 Cookie 值
 	cookies := resp.Result().Cookies()
-	assert.NotEmpty(t, cookies)
+	if len(cookies) == 0 {
+		t.Fatal("期望找到一个 Cookie，但未找到")
+	}
 
 	// 测试获取 Cookie
 	req = httptest.NewRequest("GET", "/get", nil)
-	req.AddCookie(cookies[0])
+	req.AddCookie(cookies[0]) // 使用设置的 Cookie
 	resp = httptest.NewRecorder()
 	app.Router.ServeHTTP(resp, req)
-	assert.Equal(t, 200, resp.Code)
-	assert.Equal(t, "Cookie 值: test_value", resp.Body.String())
+
+	// 验证响应状态码
+	if resp.Code != http.StatusOK {
+		t.Fatalf("期望状态码 %d，得到 %d", http.StatusOK, resp.Code)
+	}
+
+	// 验证响应内容
+	expectedBody := "Cookie 值: test_value"
+	if resp.Body.String() != expectedBody {
+		t.Fatalf("期望响应内容 '%s'，但得到 '%s'", expectedBody, resp.Body.String())
+	}
 }
