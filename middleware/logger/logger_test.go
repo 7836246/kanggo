@@ -15,7 +15,7 @@ func TestLoggerMiddleware(t *testing.T) {
 	app := kanggo.Default()
 
 	// 使用 Logger 中间件
-	app.Use(Logger())
+	app.Use(New())
 
 	// 注册一个简单的 GET 路由
 	app.GET("/test", func(ctx *kanggo.Context) error {

@@ -13,7 +13,7 @@ func TestRecoveryMiddleware(t *testing.T) {
 	app := kanggo.Default()
 
 	// 使用 Recovery 中间件
-	app.Use(Recovery())
+	app.Use(New())
 
 	// 注册一个会产生 panic 的路由
 	app.GET("/panic", func(ctx *kanggo.Context) error {

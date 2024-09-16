@@ -60,8 +60,8 @@ func generateSessionID() string {
 	return hex.EncodeToString(bytes) // 返回十六进制编码的字符串
 }
 
-// Middleware 中间件函数，用于管理会话
-func Middleware(store Store) core.MiddlewareFunc {
+// New Middleware 中间件函数，用于管理会话
+func New(store Store) core.MiddlewareFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			// 检查请求中是否存在 session ID

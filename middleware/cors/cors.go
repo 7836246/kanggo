@@ -6,8 +6,8 @@ import (
 	"github.com/7836246/kanggo/core"
 )
 
-// CORS 中间件
-func CORS() core.MiddlewareFunc {
+// New CORS 中间件
+func New() core.MiddlewareFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			// 设置 CORS 头

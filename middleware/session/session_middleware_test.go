@@ -8,7 +8,7 @@ import (
 
 func TestSessionMiddleware(t *testing.T) {
 	store := NewMemoryStore() // 使用内存存储
-	middleware := Middleware(store)
+	middleware := New(store)
 
 	// 创建测试请求
 	req, _ := http.NewRequest("GET", "/", nil)

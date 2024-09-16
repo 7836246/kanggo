@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-// Logger 中间件，用于记录请求处理时间
-func Logger() core.MiddlewareFunc {
+// New Logger 中间件，用于记录请求处理时间
+func New() core.MiddlewareFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			start := time.Now()

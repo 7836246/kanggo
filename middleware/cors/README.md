@@ -62,10 +62,10 @@ import (
 )
 
 func main() {
-    app := bakenggo.Default()
+    app := kanggo.Default()
 
     // 使用 CORS 中间件
-    app.Use(cors.CORS("*", "GET,POST,OPTIONS", "Content-Type"))
+    app.Use(cors.New("*", "GET,POST,OPTIONS", "Content-Type"))
 
     app.GET("/", func(ctx *kanggo.Context) error {
         return ctx.SendString("Hello, KangGo with CORS!")

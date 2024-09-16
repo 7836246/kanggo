@@ -13,7 +13,7 @@ func TestETagMiddleware(t *testing.T) {
 	app := kanggo.Default()
 
 	// 使用 ETag 中间件
-	app.Use(ETag())
+	app.Use(New())
 
 	// 注册一个简单的 GET 路由
 	app.GET("/etag", func(ctx *kanggo.Context) error {

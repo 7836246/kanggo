@@ -7,6 +7,8 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/config.go" />
+              <option value="file://$PROJECT_DIR$/middleware/cookie/cookie.go" />
+              <option value="file://$PROJECT_DIR$/middleware/encryptcookie/encryptcookie.go" />
             </set>
           </value>
         </entry>
@@ -15,6 +17,13 @@
             <set>
               <option value="file://$PROJECT_DIR$/context.go" />
               <option value="file://$PROJECT_DIR$/middleware/session/session.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="CookieOptions">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/middleware/cookie/cookie.go" />
             </set>
           </value>
         </entry>
@@ -222,31 +231,83 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/cookie/cookie.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726461696879" />
+              <option name="schema">
+                <list>
+                  <option value="Config" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/cookie/cookie_test.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726461745495" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/cookie/utils.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726461715294" />
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/middleware/cors/cors.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726278125891" />
+              <option name="lastModified" value="1726462511526" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/cors/cors_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726278125891" />
+              <option name="lastModified" value="1726462511576" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/encryptcookie/encryptcookie.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726462511499" />
+              <option name="schema">
+                <list>
+                  <option value="Config" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/encryptcookie/encryptcookie_test.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726462367798" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/encryptcookie/utils.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726462341947" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/etag/etag.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726309160054" />
+              <option name="lastModified" value="1726462546454" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/etag/etag_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726309160055" />
+              <option name="lastModified" value="1726462546415" />
             </ScannedPath>
           </value>
         </entry>
@@ -265,41 +326,48 @@
         <entry key="file://$PROJECT_DIR$/middleware/logger/logger.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726278125945" />
+              <option name="lastModified" value="1726462562700" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/logger/logger_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726278125945" />
+              <option name="lastModified" value="1726462562670" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/recovery/recovery.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726436764409" />
+              <option name="lastModified" value="1726462579498" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/recovery/recovery_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726436781142" />
+              <option name="lastModified" value="1726462579519" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/session/session.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726459291341" />
+              <option name="lastModified" value="1726462595842" />
               <option name="schema">
                 <list>
                   <option value="MemoryStore" />
                   <option value="Context" />
                 </list>
               </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/middleware/session/session_middleware_test.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1726462595805" />
             </ScannedPath>
           </value>
         </entry>
@@ -384,6 +452,7 @@
       <map>
         <entry key="config" value="Config" />
         <entry key="context" value="Context" />
+        <entry key="cookie_options" value="CookieOptions" />
         <entry key="file_route_info" value="FileRouteInfo" />
         <entry key="group" value="Group" />
         <entry key="html_template_engine" value="HTMLTemplateEngine" />

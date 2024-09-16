@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-// ETag 中间件函数，根据响应内容计算 ETag 并将其添加到响应头
-func ETag() func(http.HandlerFunc) http.HandlerFunc {
+// New ETag 中间件函数，根据响应内容计算 ETag 并将其添加到响应头
+func New() func(http.HandlerFunc) http.HandlerFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			// 创建一个 ResponseRecorder 来捕获响应
