@@ -260,14 +260,14 @@
         <entry key="file://$PROJECT_DIR$/middleware/cors/cors.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726462511526" />
+              <option name="lastModified" value="1726462630017" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/cors/cors_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726462511576" />
+              <option name="lastModified" value="1726462630100" />
             </ScannedPath>
           </value>
         </entry>
@@ -286,7 +286,7 @@
         <entry key="file://$PROJECT_DIR$/middleware/encryptcookie/encryptcookie_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726462367798" />
+              <option name="lastModified" value="1726462774891" />
             </ScannedPath>
           </value>
         </entry>
@@ -300,14 +300,14 @@
         <entry key="file://$PROJECT_DIR$/middleware/etag/etag.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726462546454" />
+              <option name="lastModified" value="1726462630089" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/etag/etag_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726462546415" />
+              <option name="lastModified" value="1726462629974" />
             </ScannedPath>
           </value>
         </entry>
@@ -326,35 +326,35 @@
         <entry key="file://$PROJECT_DIR$/middleware/logger/logger.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726462562700" />
+              <option name="lastModified" value="1726462630080" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/logger/logger_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726462562670" />
+              <option name="lastModified" value="1726462630003" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/recovery/recovery.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726462579498" />
+              <option name="lastModified" value="1726462630040" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/recovery/recovery_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726462579519" />
+              <option name="lastModified" value="1726462630049" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/middleware/session/session.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726462595842" />
+              <option name="lastModified" value="1726462630067" />
               <option name="schema">
                 <list>
                   <option value="MemoryStore" />
@@ -367,7 +367,7 @@
         <entry key="file://$PROJECT_DIR$/middleware/session/session_middleware_test.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1726462595805" />
+              <option name="lastModified" value="1726462630026" />
             </ScannedPath>
           </value>
         </entry>
