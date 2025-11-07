@@ -1,4 +1,4 @@
 package version
 
 // Version 版本管理
-const Version = "v1.0.4"
+const Version = "v1.4.0-phase3"
