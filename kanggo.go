@@ -2,9 +2,10 @@ package kanggo
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/7836246/kanggo/constants" // 引入 constants 包
 	"github.com/7836246/kanggo/core"
-	"net/http"
 )
 
 // KangGo 核心结构
@@ -12,6 +13,7 @@ type KangGo struct {
 	Router     *Router
 	Config     Config
 	middleware []core.MiddlewareFunc // 用于存储中间件函数的切片
+	engine     Engine                // HTTP 引擎（Phase 2）
 }
 
 // Default 创建一个带有默认设置的 KangGo 实例
@@ -136,15 +138,30 @@ func (k *KangGo) Run(addr string) error {
 	if k.Config.PrintRoutes {
 		k.Router.PrintRoutes() // 打印所有注册的路由信息
 	}
-	// 创建一个自定义的 HTTP 服务器配置
-	server := &http.Server{
-		Addr:         addr,
-		Handler:      k.Router,              // 使用 KangGo 的路由器作为请求处理器
-		IdleTimeout:  k.Config.IdleTimeout,  // 设置空闲连接超时时间
-		ReadTimeout:  k.Config.ReadTimeout,  // 设置读取请求超时时间
-		WriteTimeout: k.Config.WriteTimeout, // 设置写入响应超时时间
+
+	// 打印引擎信息
+	fmt.Printf("🚀 KangGo 服务器启动中...\n")
+	fmt.Printf("   引擎模式: %s\n", k.Config.EngineMode.String())
+	fmt.Printf("   监听地址: %s\n", addr)
+
+	// 如果已经有引擎，使用现有引擎
+	if k.engine == nil {
+		// 创建引擎配置
+		engineCfg := EngineConfig{
+			Mode:               k.Config.EngineMode,
+			ReadTimeout:        k.Config.ReadTimeout,
+			WriteTimeout:       k.Config.WriteTimeout,
+			IdleTimeout:        k.Config.IdleTimeout,
+			MaxRequestBodySize: k.Config.MaxRequestBodySize,
+			Concurrency:        k.Config.Concurrency,
+			DisableKeepalive:   k.Config.DisableKeepalive,
+			ReduceMemoryUsage:  k.Config.ReduceMemoryUsage,
+		}
+
+		// 创建引擎（传入 Router 作为 handler）
+		k.engine = NewEngine(k.Config.EngineMode, engineCfg, k.Router)
 	}
 
-	fmt.Printf("KangGo 服务器正在运行，地址 %s\n", addr)
-	return server.ListenAndServe()
+	// 启动服务器
+	return k.engine.ListenAndServe(addr)
 }

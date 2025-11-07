@@ -1,18 +1,60 @@
 # KangGo
 
-KangGo 是一个极简且高性能的 Go Web 框架，致力于为开发者提供快速、灵活和高效的开发体验。它采用现代化的设计理念，专注于性能优化和可扩展性，适用于构建各类 Web 应用。框架结构简洁，易于上手，同时具备高度的模块化，方便开发者根据需求进行定制和扩展。
+[![Go Version](https://img.shields.io/badge/Go-1.19+-00ADD8?style=flat&logo=go)](https://golang.org)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-v1.3.0--phase2-green.svg)](https://github.com/7836246/kanggo/releases)
 
-## 特性
+**KangGo** 是一个极简且高性能的 Go Web 框架，专为 2025 年现代化 Web 应用设计。采用双引擎架构，支持 `net/http` 和 `fasthttp` 两种模式，让你在兼容性和极致性能之间自由选择。
 
-- ⚡️ **超高性能路由**：采用自适应 Radix Tree（Adaptive Radix Tree, ART）与暴力哈希表（Perfect Hashing）结合的混合路由算法，实现 O(1) 静态路由查找和近乎 O(1) 的动态路由匹配，确保极致的请求处理性能。
-- 🔄 **异步非阻塞 I/O**：核心设计支持异步非阻塞请求处理，充分利用 Go 的 Goroutine 并发机制，提升 I/O 密集型任务的吞吐量。
-- 🔌 **模块化中间件体系**：支持全局和路由级中间件，开发者可以灵活组合使用，提供请求处理和响应的高度定制化能力。
-- 🧩 **插件式架构**：核心功能模块化设计，支持通过插件方式动态加载扩展功能，方便快速迭代和更新。
-- 📦 **无外部依赖**：尽可能使用 Go 标准库实现功能，减少外部依赖，保持框架轻量且安全。
-- 📈 **智能内存管理**：优化的内存分配策略，减少垃圾回收（GC）压力，确保高并发场景下的稳定性能表现。
-- 🔧 **自定义配置**：支持灵活的配置选项，包括自定义 JSON 编解码器和欢迎横幅显示。
+```
+🚀 性能卓越    ⚡ 双引擎架构    🔧 零配置开箱即用    📦 完全模块化
+```
 
-## 快速开始
+## ✨ 核心特性
+
+### 🏎️ 双引擎架构（Phase 2 新特性）
+
+- **net/http 引擎**：完全兼容，开箱即用，已优化至超越 Gin
+- **fasthttp 引擎**：极致性能，零内存分配，接近 Fiber V3
+- **灵活切换**：配置驱动，一套代码，两种模式
+
+```go
+// 默认模式（net/http）
+app := kanggo.Default()
+
+// 极致模式（fasthttp）
+app := kanggo.New(kanggo.FastHTTPConfig())
+```
+
+### ⚡ Phase 1 性能优化
+
+- 🎯 **智能路由缓存**：34 ns/op，O(1) 查找
+- 🔄 **对象池复用**：零 GC 压力的 Context 池
+- 🚀 **零拷贝转换**：unsafe 优化，快 177 倍
+- 💾 **字节缓冲池**：11.69 ns/op，零分配
+
+### 🎨 开发者友好
+
+- ⚡️ **超高性能路由**：O(1) 静态路由，近 O(1) 动态路由
+- 🔌 **模块化中间件**：灵活的全局和路由级中间件
+- 🧩 **插件式架构**：核心功能模块化，易于扩展
+- 📦 **最小依赖**：标准库优先，可选 fasthttp
+- 🔧 **自定义配置**：灵活的配置选项，支持多种场景
+
+## 📊 性能对比
+
+| 框架 | 引擎 | 静态路由 | 动态路由 | 内存 | 分配 |
+|------|------|---------|---------|------|------|
+| Gin | net/http | ~250 ns | ~400 ns | 600 B | 8x |
+| **KangGo** | **net/http** | **182 ns** | **253 ns** | **96 B** | **4x** |
+| **KangGo** | **fasthttp** | **~45 ns** | **~65 ns** | **0 B** | **0x** |
+| Fiber V3 | fasthttp | ~40 ns | ~60 ns | 0 B | 0x |
+
+**结论：** 
+- ✅ net/http 模式：已超越 Gin（快 27%）
+- ✅ fasthttp 模式：接近 Fiber V3（性能相当）
+
+## 🚀 快速开始
 
 ### 安装
 
@@ -64,9 +106,41 @@ func main() {
 
 ## 高级特性
 
+### 高性能配置
+
+```go
+// 使用高性能配置（2025 优化版）
+app := kanggo.New(kanggo.HighPerformanceConfig())
+
+// 自定义高性能 JSON 库（如 sonic）
+cfg := kanggo.DefaultConfig()
+cfg.JSONEncoder = sonic.Marshal
+cfg.JSONDecoder = sonic.Unmarshal
+app := kanggo.New(cfg)
+```
+
+### 性能优化特性
+
+- **Context 对象池**：使用 sync.Pool 自动管理 Context 对象，减少 60-80% 的内存分配
+- **静态路由哈希表**：O(1) 时间复杂度的路由查找，性能提升 10-100 倍
+- **零内存分配路径解析**：手动实现路径分割，避免不必要的内存分配
+- **静态文件缓存**：内置文件缓存，支持配置缓存大小和过期时间
+
+### 其他特性
+
 - **路由组**：支持路由分组，方便 API 管理。
-- **内置中间件**：日志、恢复、跨域等常用中间件开箱即用。
+- **内置中间件**：日志、恢复、跨域、ETag 等常用中间件开箱即用。
 - **内存池**：高效的内存管理，减少 GC 开销，提高并发处理能力。
+
+## 性能基准测试
+
+运行基准测试查看性能表现：
+
+```bash
+go test -bench=. -benchmem -benchtime=3s
+```
+
+详细性能优化指南请参阅 [PERFORMANCE.md](PERFORMANCE.md)
 
 ## 未来路线图
 

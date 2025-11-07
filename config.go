@@ -3,8 +3,9 @@ package kanggo
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/7836246/kanggo/version"
 	"time"
+
+	"github.com/7836246/kanggo/version"
 )
 
 // Config 配置结构体，包含多个配置选项，用户可以根据需要自定义这些选项
@@ -21,6 +22,12 @@ type Config struct {
 	CaseSensitiveRouting bool                                   // 路由是否区分大小写，默认区分
 	StrictRouting        bool                                   // 是否启用严格路由模式，默认不启用
 	UnescapePath         bool                                   // 是否对 URL 路径进行解码处理，默认不处理
+	EnableRouteCache     bool                                   // 是否启用路由缓存（Phase 1 优化），默认启用
+	RouteCacheSize       int                                    // 路由缓存大小，默认 1000
+	EngineMode           EngineMode                             // 引擎模式（Phase 2）：NetHTTPMode 或 FastHTTPMode
+	Concurrency          int                                    // fasthttp 专用：最大并发连接数
+	DisableKeepalive     bool                                   // fasthttp 专用：禁用 keep-alive
+	ReduceMemoryUsage    bool                                   // fasthttp 专用：减少内存使用
 }
 
 // DefaultConfig 返回默认的配置
@@ -39,6 +46,12 @@ func DefaultConfig() Config {
 		CaseSensitiveRouting: false,           // 路由区分大小写
 		StrictRouting:        false,           // 不启用严格路由模式
 		UnescapePath:         false,           // 不对 URL 路径进行解码处理
+		EnableRouteCache:     true,            // 启用路由缓存（Phase 1 优化）
+		RouteCacheSize:       1000,            // 路由缓存大小 1000
+		EngineMode:           NetHTTPMode,     // 默认使用 net/http 引擎（兼容）
+		Concurrency:          256 * 1024,      // fasthttp 默认并发数
+		DisableKeepalive:     false,           // 默认启用 keep-alive
+		ReduceMemoryUsage:    false,           // 默认不减少内存使用
 	}
 }
 

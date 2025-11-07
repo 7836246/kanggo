@@ -2,11 +2,12 @@ package kanggo
 
 import (
 	"fmt"
-	"github.com/7836246/kanggo/core"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
+
+	"github.com/7836246/kanggo/core"
 )
 
 // HandlerFunc 定义处理函数签名
@@ -45,12 +46,15 @@ type FileRouteInfo struct {
 
 // Router 路由结构
 type Router struct {
-	staticRoutes []StaticRouteInfo     // 普通静态路由列表
-	fileRoutes   []FileRouteInfo       // 文件路由列表
-	dynamicRoot  *RadixNode            // 动态路由的 Radix Tree 根节点
-	routes       []RouteInfo           // 存储所有注册的动态路由信息
-	config       Config                // 添加配置到 Router 中
-	middleware   []core.MiddlewareFunc // 中间件切片
+	staticRoutes   []StaticRouteInfo      // 普通静态路由列表（用于打印）
+	staticRouteMap map[string]HandlerFunc // 静态路由哈希表，O(1) 查找
+	fileRoutes     []FileRouteInfo        // 文件路由列表
+	dynamicRoot    *RadixNode             // 动态路由的 Radix Tree 根节点
+	routes         []RouteInfo            // 存储所有注册的动态路由信息
+	config         Config                 // 添加配置到 Router 中
+	middleware     []core.MiddlewareFunc  // 中间件切片
+	routeCache     *RouteCache            // 路由缓存（Phase 1 优化）
+	regexRouter    *RegexRouter           // 正则表达式路由器（Phase 3）
 }
 
 // Use 方法注册中间件到路由器
@@ -60,13 +64,22 @@ func (r *Router) Use(mw core.MiddlewareFunc) {
 
 // NewRouter 创建一个新的路由器
 func NewRouter(cfg Config) *Router {
-	return &Router{
-		staticRoutes: []StaticRouteInfo{}, // 初始化普通静态路由列表
-		fileRoutes:   []FileRouteInfo{},   // 初始化文件路由列表
-		dynamicRoot:  &RadixNode{children: make(map[string]*RadixNode)},
-		config:       cfg,
-		routes:       []RouteInfo{}, // 初始化路由信息列表
+	router := &Router{
+		staticRoutes:   []StaticRouteInfo{},              // 初始化普通静态路由列表
+		staticRouteMap: make(map[string]HandlerFunc, 32), // 预分配哈希表容量
+		fileRoutes:     []FileRouteInfo{},                // 初始化文件路由列表
+		dynamicRoot:    &RadixNode{children: make(map[string]*RadixNode)},
+		config:         cfg,
+		routes:         []RouteInfo{},       // 初始化路由信息列表
+		routeCache:     NewRouteCache(1000), // 初始化路由缓存，默认 1000 条
 	}
+
+	// 根据配置决定是否启用路由缓存
+	if !cfg.EnableRouteCache {
+		router.routeCache.Disable()
+	}
+
+	return router
 }
 
 // RegisterStaticRoute 注册普通静态路由信息
@@ -76,6 +89,9 @@ func (r *Router) RegisterStaticRoute(method, pattern string, handler HandlerFunc
 		Prefix:  pattern,
 		Handler: handler,
 	})
+	// 同时添加到哈希表，使用 method:pattern 作为键
+	key := method + ":" + pattern
+	r.staticRouteMap[key] = handler
 }
 
 // RegisterFileRoute 注册文件路由信息
@@ -171,20 +187,29 @@ func isStaticRoute(pattern string) bool {
 	return !strings.Contains(pattern, ":") && !strings.Contains(pattern, "*")
 }
 
-// isFileRoute 判断是否为文件路由（包含 "*" 的模式）
-func isFileRoute(pattern string) bool {
-	return strings.Contains(pattern, "*")
-}
-
 // insertDynamicRoute 向 Radix Tree 中插入动态路由
-func (r *Router) insertDynamicRoute(method, pattern string, handler HandlerFunc) {
-	parts := strings.Split(pattern, "/")
+func (r *Router) insertDynamicRoute(_ /* method */, pattern string, handler HandlerFunc) {
+	// 预分配切片容量，减少扩容
+	parts := make([]string, 0, 8)
+	start := 0
+	for i := 0; i < len(pattern); i++ {
+		if pattern[i] == '/' {
+			if i > start {
+				parts = append(parts, pattern[start:i])
+			}
+			start = i + 1
+		}
+	}
+	if start < len(pattern) {
+		parts = append(parts, pattern[start:])
+	}
+
 	node := r.dynamicRoot
 	for _, part := range parts {
 		if part == "" {
 			continue
 		}
-		isParam := strings.HasPrefix(part, ":")
+		isParam := len(part) > 0 && part[0] == ':'
 		childKey := part
 		if isParam {
 			childKey = ":param" // 所有参数化路径的标识符
@@ -194,7 +219,7 @@ func (r *Router) insertDynamicRoute(method, pattern string, handler HandlerFunc)
 		if !ok {
 			child = &RadixNode{
 				path:     part,
-				children: make(map[string]*RadixNode),
+				children: make(map[string]*RadixNode, 2), // 预分配容量
 				isParam:  isParam,
 			}
 			if isParam {
@@ -232,8 +257,9 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		path = unescapedPath
 	}
 
-	// 创建 Context 时传递配置参数
-	ctx := NewContext(w, req, r.config)
+	// 从对象池获取 Context 实例
+	ctx := AcquireContext(w, req, r.config)
+	defer ReleaseContext(ctx) // 请求结束后归还到对象池
 
 	// 最终的处理函数，实际处理请求逻辑
 	finalHandler := http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
@@ -248,18 +274,40 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			}
 		}
 
-		// 查找静态路由
-		for _, staticRoute := range r.staticRoutes {
-			if path == staticRoute.Prefix {
-				if err := staticRoute.Handler(ctx); err != nil {
-					r.handleError(w, err)
-				}
-				return
+		// 使用哈希表查找静态路由，O(1) 时间复杂度
+		staticKey := req.Method + ":" + path
+		if handler, found := r.staticRouteMap[staticKey]; found {
+			if err := handler(ctx); err != nil {
+				r.handleError(w, err)
 			}
+			return
+		}
+
+		// 先检查路由缓存
+		if handler, params, found := r.routeCache.Get(req.Method, path); found {
+			// 从缓存获取路由
+			for k, v := range params {
+				ctx.Params[k] = v
+			}
+			if err := handler(ctx); err != nil {
+				r.handleError(w, err)
+			}
+			return
 		}
 
 		// 查找动态路由
 		if handler, found := r.searchDynamicRoute(req.Method, path, ctx); found {
+			// 将路由添加到缓存
+			r.routeCache.Set(req.Method, path, handler, ctx.Params)
+
+			if err := handler(ctx); err != nil {
+				r.handleError(w, err)
+			}
+			return
+		}
+
+		// 尝试正则表达式路由匹配（Phase 3）
+		if handler, found := matchRegexRoute(r, req.Method, path, ctx); found {
 			if err := handler(ctx); err != nil {
 				r.handleError(w, err)
 			}
@@ -281,30 +329,34 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 
 // searchDynamicRoute 在 Radix Tree 中查找动态路由
-func (r *Router) searchDynamicRoute(method, path string, ctx *Context) (HandlerFunc, bool) {
-	parts := strings.Split(path, "/")
+func (r *Router) searchDynamicRoute(_ /* method */, path string, ctx *Context) (HandlerFunc, bool) {
+	// 手动分割路径，避免 strings.Split 的内存分配
 	node := r.dynamicRoot
 	var child *RadixNode // 在循环外声明 child 变量
 	var ok bool          // 在循环外声明 ok 变量
 
-	for _, part := range parts {
-		if part == "" {
-			continue
-		}
+	start := 0
+	for i := 0; i <= len(path); i++ {
+		if i == len(path) || path[i] == '/' {
+			if i > start {
+				part := path[start:i]
 
-		// 先尝试静态部分匹配
-		child, ok = node.children[part]
-		if ok {
-			node = child
-		} else {
-			// 再尝试参数化部分匹配
-			child, ok = node.children[":param"]
-			if ok {
-				ctx.Params[child.paramKey] = part
-				node = child
-			} else {
-				return nil, false
+				// 先尝试静态部分匹配
+				child, ok = node.children[part]
+				if ok {
+					node = child
+				} else {
+					// 再尝试参数化部分匹配
+					child, ok = node.children[":param"]
+					if ok {
+						ctx.Params[child.paramKey] = part
+						node = child
+					} else {
+						return nil, false
+					}
+				}
 			}
+			start = i + 1
 		}
 	}
 
@@ -317,4 +369,14 @@ func (r *Router) searchDynamicRoute(method, path string, ctx *Context) (HandlerF
 // handleError 统一的错误处理
 func (r *Router) handleError(w http.ResponseWriter, err error) {
 	http.Error(w, err.Error(), http.StatusInternalServerError)
+}
+
+// CacheStats 获取路由缓存统计信息
+func (r *Router) CacheStats() map[string]interface{} {
+	if r.routeCache == nil {
+		return map[string]interface{}{
+			"enabled": false,
+		}
+	}
+	return r.routeCache.Stats()
 }

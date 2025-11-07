@@ -2,13 +2,28 @@ package kanggo
 
 import (
 	"fmt"
-	"github.com/7836246/kanggo/constants"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
+
+	"github.com/7836246/kanggo/constants"
+)
+
+// fileCache 文件缓存结构
+type fileCache struct {
+	data       []byte
+	modTime    time.Time
+	expireTime time.Time
+}
+
+// fileCacheMap 全局文件缓存
+var (
+	fileCacheMap = make(map[string]*fileCache)
+	fileCacheMu  sync.RWMutex
 )
 
 // StaticConfig 配置结构体，定义静态文件服务的选项
@@ -22,6 +37,8 @@ type StaticConfig struct {
 	MaxAge         int                                      // 设置文件响应的 Cache-Control HTTP 头的值，MaxAge 以秒为单位，默认值 0
 	ModifyResponse func(http.ResponseWriter, *http.Request) // 自定义函数，允许修改响应，默认值为 nil
 	Next           func(*Context) bool                      // 定义一个函数，当返回 true 时跳过此中间件，默认值为 nil
+	EnableCache    bool                                     // 是否启用内存缓存，默认值 false
+	MaxCacheSize   int64                                    // 单个文件最大缓存大小，默认 1MB
 }
 
 // NewStaticConfig 返回一个带有默认值的 StaticConfig 配置实例
@@ -36,6 +53,34 @@ func NewStaticConfig() StaticConfig {
 		MaxAge:         0,
 		ModifyResponse: nil,
 		Next:           nil,
+		EnableCache:    false,
+		MaxCacheSize:   1024 * 1024, // 1MB
+	}
+}
+
+// getCachedFile 从缓存获取文件
+func getCachedFile(path string, modTime time.Time) ([]byte, bool) {
+	fileCacheMu.RLock()
+	defer fileCacheMu.RUnlock()
+
+	if cache, ok := fileCacheMap[path]; ok {
+		// 检查缓存是否过期
+		if time.Now().Before(cache.expireTime) && cache.modTime.Equal(modTime) {
+			return cache.data, true
+		}
+	}
+	return nil, false
+}
+
+// setCachedFile 设置文件缓存
+func setCachedFile(path string, data []byte, modTime time.Time, duration time.Duration) {
+	fileCacheMu.Lock()
+	defer fileCacheMu.Unlock()
+
+	fileCacheMap[path] = &fileCache{
+		data:       data,
+		modTime:    modTime,
+		expireTime: time.Now().Add(duration),
 	}
 }
 
@@ -100,6 +145,22 @@ func (k *KangGo) Static(prefix, root string, config ...StaticConfig) *KangGo {
 		}
 		if cfg.ModifyResponse != nil {
 			cfg.ModifyResponse(ctx.Writer, ctx.Request)
+		}
+
+		// 如果启用缓存且文件大小合适，尝试从缓存读取
+		if cfg.EnableCache && info.Size() <= cfg.MaxCacheSize {
+			if cachedData, found := getCachedFile(filePath, info.ModTime()); found {
+				ctx.Writer.Write(cachedData)
+				return nil
+			}
+
+			// 读取文件并缓存
+			data, err := os.ReadFile(filePath)
+			if err == nil {
+				setCachedFile(filePath, data, info.ModTime(), cfg.CacheDuration)
+				ctx.Writer.Write(data)
+				return nil
+			}
 		}
 
 		http.ServeFile(ctx.Writer, ctx.Request, filePath)

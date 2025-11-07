@@ -2,12 +2,14 @@ package kanggo
 
 import (
 	"encoding/json"
-	"github.com/7836246/kanggo/constants"
 	"io"
 	"net/http"
 	"os"
 	"reflect"
 	"strconv"
+	"sync"
+
+	"github.com/7836246/kanggo/constants"
 )
 
 // Context 代表 HTTP 请求的上下文
@@ -20,15 +22,40 @@ type Context struct {
 	TemplateEngine TemplateEngine
 }
 
-// NewContext 创建一个新的 Context 实例
-func NewContext(w http.ResponseWriter, req *http.Request, cfg Config) *Context {
-	return &Context{
-		Writer:      w,
-		Request:     req,
-		Params:      make(map[string]string),
-		jsonEncoder: cfg.JSONEncoder,
-		jsonDecoder: cfg.JSONDecoder,
+// contextPool 是 Context 对象池，用于减少 GC 压力
+var contextPool = sync.Pool{
+	New: func() interface{} {
+		return &Context{
+			Params: make(map[string]string, 4), // 预分配容量
+		}
+	},
+}
+
+// AcquireContext 从对象池获取一个 Context 实例
+func AcquireContext(w http.ResponseWriter, req *http.Request, cfg Config) *Context {
+	ctx := contextPool.Get().(*Context)
+	ctx.Writer = w
+	ctx.Request = req
+	ctx.jsonEncoder = cfg.JSONEncoder
+	ctx.jsonDecoder = cfg.JSONDecoder
+	// 清空 Params map 但保留容量
+	for k := range ctx.Params {
+		delete(ctx.Params, k)
 	}
+	return ctx
+}
+
+// ReleaseContext 将 Context 实例归还到对象池
+func ReleaseContext(ctx *Context) {
+	ctx.Writer = nil
+	ctx.Request = nil
+	ctx.TemplateEngine = nil
+	contextPool.Put(ctx)
+}
+
+// NewContext 创建一个新的 Context 实例（保留向后兼容）
+func NewContext(w http.ResponseWriter, req *http.Request, cfg Config) *Context {
+	return AcquireContext(w, req, cfg)
 }
 
 // Param 获取路径参数
@@ -118,13 +145,14 @@ func (c *Context) BindForm(obj interface{}) error {
 	return nil
 }
 
-// JSON 返回一个 JSON 响应
+// JSON 返回一个 JSON 响应（使用缓冲池优化）
 func (c *Context) JSON(code int, obj interface{}) error {
 	data, err := c.jsonEncoder(obj)
 	if err != nil {
 		return err
 	}
-	c.Writer.Header().Set(constants.HeaderContentType, constants.MIMEApplicationJSON) // 使用常量
+
+	c.Writer.Header().Set(constants.HeaderContentType, constants.MIMEApplicationJSON)
 	c.Writer.WriteHeader(code)
 	_, err = c.Writer.Write(data)
 	return err
@@ -137,7 +165,17 @@ func (c *Context) JSONP(callback string, obj interface{}) error {
 		return err
 	}
 	c.Writer.Header().Set(constants.HeaderContentType, constants.MIMEApplicationJavaScript) // 使用常量
-	_, err = c.Writer.Write([]byte(callback + "(" + string(data) + ");"))
+
+	// 使用 strings.Builder 减少内存分配
+	// 预估容量：callback + "(" + data + ");"
+	capacity := len(callback) + len(data) + 3
+	result := make([]byte, 0, capacity)
+	result = append(result, callback...)
+	result = append(result, '(')
+	result = append(result, data...)
+	result = append(result, ')', ';')
+
+	_, err = c.Writer.Write(result)
 	return err
 }
 

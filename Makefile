@@ -1,106 +1,116 @@
-GO ?= go
-GOFMT ?= gofmt "-s"
-GO_VERSION=$(shell $(GO) version | cut -c 14- | cut -d' ' -f1 | cut -d'.' -f2)
-PACKAGES ?= $(shell $(GO) list ./...)
-VETPACKAGES ?= $(shell $(GO) list ./... | grep -v /examples/)
-GOFILES := $(shell find . -name "*.go")
-TESTFOLDER := $(shell $(GO) list ./... | grep -E 'kanggo$$' | grep -v examples)
-TESTTAGS ?= ""
+.PHONY: build build-fasthttp test bench bench-fasthttp clean help install-deps run-demo run-demo-fasthttp
 
-.PHONY: test
-# Run tests to verify code functionality.
-test:
-	@echo "mode: count" > coverage.out
-	@for d in $(TESTFOLDER); do \
-		$(GO) test $(TESTTAGS) -v -covermode=count -coverprofile=profile.out $$d > tmp.out; \
-		cat tmp.out; \
-		if grep -q "^--- FAIL" tmp.out; then \
-			rm tmp.out; \
-			exit 1; \
-		elif grep -q "build failed" tmp.out; then \
-			rm tmp.out; \
-			exit 1; \
-		elif grep -q "setup failed" tmp.out; then \
-			rm tmp.out; \
-			exit 1; \
-		fi; \
-		if [ -f profile.out ]; then \
-			cat profile.out | grep -v "mode:" >> coverage.out; \
-			rm profile.out; \
-		fi; \
-	done
-
-.PHONY: fmt
-# Ensure consistent code formatting.
-fmt:
-	$(GOFMT) -w $(GOFILES)
-
-.PHONY: fmt-check
-# Check if code is formatted correctly.
-fmt-check:
-	@diff=$$($(GOFMT) -d $(GOFILES)); \
-	if [ -n "$$diff" ]; then \
-		echo "Please run 'make fmt' and commit the result:"; \
-		echo "$${diff}"; \
-		exit 1; \
-	fi;
-
-.PHONY: vet
-# Examine packages and report suspicious constructs if any.
-vet:
-	$(GO) vet $(VETPACKAGES)
-
-.PHONY: lint
-# Inspect source code for stylistic errors or potential bugs.
-lint:
-	@hash golint > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
-		$(GO) install golang.org/x/lint/golint@latest; \
-	fi
-	for PKG in $(PACKAGES); do golint -set_exit_status $$PKG || exit 1; done;
-
-.PHONY: misspell
-# Correct commonly misspelled English words in source code.
-misspell:
-	@hash misspell > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
-		$(GO) install github.com/client9/misspell/cmd/misspell@latest; \
-	fi
-	misspell -w $(GOFILES)
-
-.PHONY: misspell-check
-# Check for commonly misspelled English words.
-misspell-check:
-	@hash misspell > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
-		$(GO) install github.com/client9/misspell/cmd/misspell@latest; \
-	fi
-	misspell -error $(GOFILES)
-
-.PHONY: tools
-# Install tools (golint and misspell).
-tools:
-	@if [ $(GO_VERSION) -gt 15 ]; then \
-		$(GO) install golang.org/x/lint/golint@latest; \
-		$(GO) install github.com/client9/misspell/cmd/misspell@latest; \
-	elif [ $(GO_VERSION) -lt 16 ]; then \
-		$(GO) install golang.org/x/lint/golint; \
-		$(GO) install github.com/client9/misspell/cmd/misspell; \
-	fi
-
-.PHONY: help
-# Help.
-help:
-	@echo ''
-	@echo 'Usage:'
-	@echo ' make [target]'
-	@echo ''
-	@echo 'Targets:'
-	@awk '/^[a-zA-Z\-\0-9]+:/ { \
-	helpMessage = match(lastLine, /^# (.*)/); \
-		if (helpMessage) { \
-			helpCommand = substr($$1, 0, index($$1, ":")-1); \
-			helpMessage = substr(lastLine, RSTART + 2, RLENGTH); \
-			printf " - \033[36m%-20s\033[0m %s\n", helpCommand, helpMessage; \
-		} \
-	} \
-	{ lastLine = $$0 }' $(MAKEFILE_LIST)
-
+# 默认目标
 .DEFAULT_GOAL := help
+
+# 变量
+BINARY_NAME=kanggo-app
+BUILD_DIR=bin
+GO=go
+GOFLAGS=
+TAGS=
+
+## help: 显示帮助信息
+help:
+	@echo "KangGo 构建命令"
+	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	@echo ""
+	@echo "构建命令："
+	@echo "  make build             - 构建（net/http 引擎）"
+	@echo "  make build-fasthttp    - 构建（fasthttp 引擎）"
+	@echo ""
+	@echo "测试命令："
+	@echo "  make test              - 运行所有测试"
+	@echo "  make bench             - 运行基准测试（net/http）"
+	@echo "  make bench-fasthttp    - 运行基准测试（fasthttp）"
+	@echo ""
+	@echo "运行命令："
+	@echo "  make run-demo          - 运行演示（net/http）"
+	@echo "  make run-demo-fasthttp - 运行演示（fasthttp）"
+	@echo ""
+	@echo "其他命令："
+	@echo "  make install-deps      - 安装依赖"
+	@echo "  make clean             - 清理构建文件"
+	@echo ""
+
+## build: 构建应用（net/http 引擎）
+build:
+	@echo "📦 构建中... (net/http 引擎)"
+	@mkdir -p $(BUILD_DIR)
+	$(GO) build $(GOFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME)
+	@echo "✓ 构建完成: $(BUILD_DIR)/$(BINARY_NAME)"
+
+## build-fasthttp: 构建应用（fasthttp 引擎）
+build-fasthttp:
+	@echo "⚡ 构建中... (fasthttp 引擎)"
+	@mkdir -p $(BUILD_DIR)
+	$(GO) build $(GOFLAGS) -tags fasthttp -o $(BUILD_DIR)/$(BINARY_NAME)-fast
+	@echo "✓ 构建完成: $(BUILD_DIR)/$(BINARY_NAME)-fast"
+
+## test: 运行所有测试
+test:
+	@echo "🧪 运行测试..."
+	$(GO) test -v ./...
+
+## bench: 运行基准测试（net/http）
+bench:
+	@echo "📊 运行基准测试 (net/http)..."
+	$(GO) test -bench=. -benchmem -benchtime=2s
+
+## bench-fasthttp: 运行基准测试（fasthttp）
+bench-fasthttp:
+	@echo "📊 运行基准测试 (fasthttp)..."
+	$(GO) test -tags fasthttp -bench=. -benchmem -benchtime=2s
+
+## bench-compare: 对比两种引擎的性能
+bench-compare:
+	@echo "📊 性能对比测试..."
+	@echo ""
+	@echo "━━━ net/http 引擎 ━━━"
+	@$(GO) test -bench=BenchmarkStaticRoute -benchmem -benchtime=1s | grep "BenchmarkStaticRoute"
+	@echo ""
+	@echo "━━━ fasthttp 引擎 ━━━"
+	@$(GO) test -tags fasthttp -bench=BenchmarkStaticRoute -benchmem -benchtime=1s | grep "BenchmarkStaticRoute" || echo "需要安装 fasthttp: go get github.com/valyala/fasthttp"
+
+## run-demo: 运行演示程序（net/http）
+run-demo:
+	@echo "🚀 运行演示... (net/http 引擎)"
+	$(GO) run examples/phase2_demo.go
+
+## run-demo-fasthttp: 运行演示程序（fasthttp）
+run-demo-fasthttp:
+	@echo "⚡ 运行演示... (fasthttp 引擎)"
+	$(GO) run -tags fasthttp examples/phase2_demo.go
+
+## install-deps: 安装依赖
+install-deps:
+	@echo "📦 安装依赖..."
+	$(GO) get github.com/valyala/fasthttp
+	$(GO) mod tidy
+	@echo "✓ 依赖安装完成"
+
+## clean: 清理构建文件
+clean:
+	@echo "🧹 清理中..."
+	@rm -rf $(BUILD_DIR)
+	@$(GO) clean
+	@echo "✓ 清理完成"
+
+## lint: 运行代码检查
+lint:
+	@echo "🔍 运行代码检查..."
+	@command -v golangci-lint >/dev/null 2>&1 || { echo "需要安装 golangci-lint"; exit 1; }
+	golangci-lint run
+
+## fmt: 格式化代码
+fmt:
+	@echo "✨ 格式化代码..."
+	$(GO) fmt ./...
+	@echo "✓ 格式化完成"
+
+## mod: 更新依赖
+mod:
+	@echo "📦 更新依赖..."
+	$(GO) mod download
+	$(GO) mod tidy
+	@echo "✓ 依赖更新完成"
