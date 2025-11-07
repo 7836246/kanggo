@@ -140,15 +140,72 @@ app := kanggo.New(cfg)
 go test -bench=. -benchmem -benchtime=3s
 ```
 
-详细性能优化指南请参阅 [PERFORMANCE.md](PERFORMANCE.md)
+## 📚 完整文档
 
-## 未来路线图
+KangGo 提供了详尽的文档系统，包含 25+ 份完整文档：
 
-- 🔧 增强路由解析算法，支持更复杂的路由匹配规则。
-- 🛡️ 提供更多内置中间件（如限流、身份验证等）。
-- 🌍 支持国际化和本地化。
-- 📜 集成 Swagger 自动文档生成。
+### 快速开始
+- **[文档中心](docs/README.md)** - 所有文档的导航中心
+- **[项目状态](docs/PROJECT_STATUS.md)** - 当前项目状态
+- **[快速开始 - Phase 2](docs/QUICK_START_PHASE2.md)** - 5分钟快速上手
 
-## 贡献
+### 性能文档
+- **[性能优化指南](docs/PERFORMANCE.md)** - 完整的性能优化指南
+- **[基准测试报告](docs/BENCHMARKS.md)** - 详细的性能测试结果
+- **[优化报告](docs/OPTIMIZATION_REPORT.md)** - 优化详细报告
 
-欢迎参与 KangGo 的开发！请提交 Pull Request 或 Issue 来帮助我们改善这个框架。
+### Phase 报告
+- **[Phase 1 完成报告](docs/PHASE1_COMPLETED.md)** - 底层优化详解
+- **[Phase 2 架构设计](docs/PHASE2_ARCHITECTURE.md)** - 双引擎架构
+- **[Phase 3 完成报告](docs/PHASE3_COMPLETED.md)** - 高级特性详解
+
+### 对比与路线图
+- **[与 Gin 对比](docs/COMPARISON_WITH_GIN.md)** - KangGo vs Gin
+- **[Fiber V3 路线图](docs/FIBER_V3_ROADMAP.md)** - 技术演进路线
+- **[终极总结](docs/ULTIMATE_SUMMARY.md)** - 完整项目总结
+
+> 📖 **查看所有文档**: [docs/README.md](docs/README.md)
+
+## 🎯 示例程序
+
+KangGo 提供了丰富的示例程序，展示各种功能的使用：
+
+```bash
+# Phase 1: 性能优化演示
+go run examples/phase1_demo.go
+
+# Phase 2: 双引擎演示
+go run examples/phase2_demo.go
+
+# WebSocket 实时通信
+go run examples/websocket_demo.go
+
+# Server-Sent Events
+go run examples/sse_demo.go
+
+# 请求验证系统
+go run examples/validator_demo.go
+```
+
+## 🔮 未来路线图
+
+### Phase 4: 生态扩展（规划中）
+- 🔧 CLI 工具和项目生成器
+- 🛡️ 更多内置中间件（限流、认证等）
+- 💾 数据库集成和 ORM 支持
+- 📊 性能监控和链路追踪
+- 🌍 国际化和本地化
+- 📜 Swagger 自动文档生成
+
+详细路线图请查看: [docs/FIBER_V3_ROADMAP.md](docs/FIBER_V3_ROADMAP.md)
+
+## 🤝 贡献
+
+欢迎参与 KangGo 的开发！我们欢迎各种形式的贡献：
+
+- 🐛 报告 Bug
+- 💡 提出新功能建议
+- 📝 改进文档
+- 🔧 提交代码
+
+请阅读 [贡献指南](CONTRIBUTING.md) 了解详情。
